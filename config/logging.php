@@ -126,6 +126,16 @@ return [
         'emergency' => [
             'path' => storage_path('logs/laravel.log'),
         ],
+
+        // Custom log files
+
+        'panrunlog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/pan_run.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('EMWIN_KEEP_LOGS_DAYS', 7),
+            'replace_placeholders' => true,
+        ],
     ],
 
 ];

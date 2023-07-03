@@ -34,21 +34,21 @@ class PanRun extends Command
     public function handle(): int
     {
         $productFile = $this->argument('productFile');
-        Log::info('PAN RUN Script Start');
+        Log::channel('panrunlog')->info('PAN RUN Script Start');
         // Check if file is zipped
         if (preg_match('/\.zip$/', $productFile)) {
             $tempDir = '/tmp/npemwin.' . bin2hex(random_bytes(10));
-            Log::info('Creating temporary directory ' . $tempDir . ' ..');
+            Log::channel('panrunlog')->info('Creating temporary directory ' . $tempDir . ' ..');
             mkdir($tempDir);
-            Log::info('Unzipping ' . $productFile . ' into ' . $tempDir . ' ..');
+            Log::channel('panrunlog')->info('Unzipping ' . $productFile . ' into ' . $tempDir . ' ..');
             exec('/usr/bin/unzip -q -d ' . $tempDir . ' ' . $productFile, $output, $exitCode);
             if ($exitCode !== 0) {
-                Log::error('Unzip failed, skipping..');
+                Log::channel('panrunlog')->error('Unzip failed, skipping..');
             } else {
                 $productFiles = glob($tempDir . '/*');
                 for ($i=0; $i<count($productFiles); $i++) {
                     if (!preg_match('/\.TXT$/', $productFiles[$i])) {
-                        Log::info('Product is not a text file, skipping.');
+                        Log::channel('panrunlog')->info('Product is not a text file, skipping.');
                     } else {
                         $this->copyProductToWebDir($productFiles[$i]);
                     }
@@ -58,11 +58,11 @@ class PanRun extends Command
         } elseif (preg_match('/\.txt$/', $productFile)) {
             $this->copyProductToWebDir($productFile);
         } elseif (preg_match('/\.(gif|jpg|png)$/', $productFile)) {
-            Log::info('Product is an image, skipping.');
+            Log::channel('panrunlog')->info('Product is an image, skipping.');
         }
         // Done!
-        Log::info('PAN RUN Script Complete');
-        Log::info('------------------------------------------------------------------');
+        Log::channel('panrunlog')->info('PAN RUN Script Complete');
+        Log::channel('panrunlog')->info('------------------------------------------------------------------');
         return 0;
     }
 
@@ -85,35 +85,35 @@ class PanRun extends Command
             }
             $dataFile = preg_replace('/\.([a-f0-9]+\.)txt/', '.txt', strtolower(basename($product)));
             // Copy product to npemwin data directory
-            Log::info('Copying ' . $product . ' to /var/npemwin/data/latest/txt/all/' . $wfoDir . '/' . $dataFile . ' ..');
+            Log::channel('panrunlog')->info('Copying ' . $product . ' to /var/npemwin/data/latest/txt/all/' . $wfoDir . '/' . $dataFile . ' ..');
             copy($product, '/var/npemwin/data/latest/txt/all/' . $wfoDir . '/' . $dataFile);
         }
         // Parse product info
-        Log::info('Attempting to parse product contents of ' . $product . ' ..');
+        Log::channel('panrunlog')->info('Attempting to parse product contents of ' . $product . ' ..');
         $awipsProduct = (new AwipsProduct($product))->toArray();
         // Check to see if file was parsed correctly by checking for AWIPS ID
         if (!isset($awipsProduct['awipsId'])) {
-            Log::error('Could not parse product, skipping.');
+            Log::channel('panrunlog')->error('Could not parse product, skipping.');
             return;
         }
         Log::info('Successfully retrieved parsed product contents.');
         // Get EMWIN file name and WFO directory
         $emwinFileName = $awipsProduct['generatedFileNames']['emwin'];
         if (is_null($emwinFileName) || $emwinFileName === '') {
-            Log::info('EMWIN file name is blank, skipping.');
+            Log::channel('panrunlog')->info('EMWIN file name is blank, skipping.');
             return;
         }
         // Check product file name to see if it matches file save regex
         if (preg_match('/' . config('emwin-controller.emwin.file_save_regex') . '/', $emwinFileName)) {
-            Log::info('Generated EMWIN product file name matched file_save_regex.');
+            Log::channel('panrunlog')->info('Generated EMWIN product file name matched file_save_regex.');
             // Check for WFO directory in EMWIN products directory
             if (!file_exists(storage_path('app/public/products/emwin/') . $wfoDir)) {
-                Log::info('Directory ' . storage_path('app/public/products/emwin/') . $wfoDir . ' does not exist, creating..');
+                Log::channel('panrunlog')->info('Directory ' . storage_path('app/public/products/emwin/') . $wfoDir . ' does not exist, creating..');
                 mkdir(storage_path('app/public/products/emwin/') . $wfoDir, 0755, TRUE);
             }
             // Copy to products directory
             $webProduct = storage_path('app/public/products/emwin/') . $wfoDir . '/' . $emwinFileName;
-            Log::info('Copying ' . $product . ' to ' . $webProduct . ' ..');
+            Log::channel('panrunlog')->info('Copying ' . $product . ' to ' . $webProduct . ' ..');
             copy($product, $webProduct);
             // Inventory product
             try {
@@ -123,7 +123,7 @@ class PanRun extends Command
                 // Broadcast new product arrived event
                 broadcast(new NewProductArrived($dbProduct))->via('pusher');
             } catch (QueryException $e) {
-                print "Error: Could not inventory product: " . $e->getMessage() . "\n";
+                Log::error('panrunlog')->info("Could not inventory product: " . $e->getMessage());
                 return 1;
             }
             // Send product to all enabled PAN plugins
@@ -133,12 +133,12 @@ class PanRun extends Command
                         'productFile' => $webProduct,
                     ]);
                     if ($exitCode !== 0) {
-                        print "There was an error calling $panPlugin.\n";
+                        Log::error('panrunlog')->info("There was an error calling $panPlugin.");
                     }
                 }
             }
         } else {
-            Log::info('Product file name does not match file save regex, skipping.');
+            Log::channel('panrunlog')->info('Product file name does not match file save regex, skipping.');
         }
     }
 }
