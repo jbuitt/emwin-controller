@@ -64,6 +64,12 @@ COPY npemwin/site/panfilter.conf /usr/local/etc/npemwin/site/
 COPY npemwin/site/panfilter.rc /usr/local/etc/npemwin/site/
 COPY npemwin/servers.conf /usr/local/etc/npemwin/
 
+# Copy over rsyslog filters
+COPY rsyslogd/99-bbserver.conf /etc/rsyslog.d/99-bbserver.conf
+COPY rsyslogd/99-npemwind.conf /etc/rsyslog.d/99-npemwind.conf
+COPY rsyslogd/99-panfilter.conf /etc/rsyslog.d/99-panfilter.conf
+COPY rsyslogd/99-qrunner.conf /etc/rsyslog.d/99-qrunner.conf
+
 # Copy over script to fix noaaport user
 COPY fix_noaaport_user.sh /usr/local/bin/
 
