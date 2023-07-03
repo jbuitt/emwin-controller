@@ -96,7 +96,7 @@ class PanRun extends Command
             Log::channel('panrunlog')->error('Could not parse product, skipping.');
             return;
         }
-        Log::info('Successfully retrieved parsed product contents.');
+        Log::channel('panrunlog')->info('Successfully retrieved parsed product contents.');
         // Get EMWIN file name and WFO directory
         $emwinFileName = $awipsProduct['generatedFileNames']['emwin'];
         if (is_null($emwinFileName) || $emwinFileName === '') {
