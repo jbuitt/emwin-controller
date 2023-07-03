@@ -82,7 +82,7 @@ docker compose exec -it emwin-controller \
    --force
 ```
 
-9. Finally, you can access the dashboard from a browser by going to [http://localhost](http://localhost).
+9. Finally, you can access the dashboard from a browser by going to [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
 ## .env Environment Variables
 
@@ -101,7 +101,7 @@ Other variables that can be modified from their default values:
 * `APP_NAME` - The name of this app. (Shows up in the browser tab and dashboard)
 * `APP_ENV` - Laravel App Environment. You'll want to use `production`.
 * `APP_DEBUG` - Debug mode. Typically will want this set to `false`.
-* `APP_URL` - Base URL for the app. Running in Docker, you would normally set to `http://localhost`. 
+* `APP_URL` - Base URL for the app. Running in Docker, you would normally set to `http://127.0.0.1:8080`. 
 
 * `EMWIN_SERVERS` - Comma-delimited list of one or more servers with their port separated by a colon. (e.g. `host1:port1,host2:port2,...`). You can get a list of current servers [here](https://www.weathermessage.com/DataSources/EMWIN.aspx).
 * `EMWIN_FILE_SAVE_REGEX` - Regular expression used to specify which products you want to save. Default is `.*`. (match all products)
