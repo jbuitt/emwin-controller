@@ -1,0 +1,8 @@
+# This will write a one line entry in a logfile, for each file received
+#
+lappend cond {1}
+lappend action {
+  set systemtime [clock seconds];
+  set logdate [clock format $systemtime -format %Y-%m-%d];
+  exec $::env(EMWIN_PAN_RUN) $rc(fpath) >>$::env(EMWIN_BASE_DIR)/storage/logs/pan_run-$logdate.log;
+}
