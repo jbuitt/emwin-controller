@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Illuminate\Console\Command;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Client\RequestException;
+use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use App\Models\Config;
 use GuzzleHttp\Exception\ConnectException;
@@ -37,6 +38,8 @@ class UpdateEmwinServerList extends Command
 
     /**
      * Execute the console command.
+     * 
+     * @return int
      */
     public function handle(): int
     {
@@ -54,8 +57,18 @@ class UpdateEmwinServerList extends Command
                 fwrite($outfile, "$host\t$port\n");
             }
             fclose($outfile);
-            print "Done.\n";
+            // Replace server list in the .env file and reload cache
+            file_put_contents(
+                app()->environmentFilePath(), 
+                str_replace(
+                    'NPEMWIN_CLIENT_SERVERLIST=' . config('emwin-controller.download_clients.npemwin.servers'), 
+                    'NPEMWIN_CLIENT_SERVERLIST=' . $serverList, 
+                    file_get_contents(app()->environmentFilePath())
+                )
+            );
+            Artisan::call('config:cache');
         }
+        // Done!
         return 0;
    }
 

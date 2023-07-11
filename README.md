@@ -103,12 +103,12 @@ Other variables that can be modified from their default values:
 * `APP_DEBUG` - Debug mode. Typically will want this set to `false`.
 * `APP_URL` - Base URL for the app. Running in Docker, you would normally set to `http://127.0.0.1:8080`. 
 
-* `EMWIN_SERVERS` - Comma-delimited list of one or more servers with their port separated by a colon. (e.g. `host1:port1,host2:port2,...`). You can get a list of current servers [here](https://www.weathermessage.com/DataSources/EMWIN.aspx).
-* `EMWIN_FILE_SAVE_REGEX` - Regular expression used to specify which products you want to save. Default is `.*`. (match all products)
-* `EMWIN_KEEP_LOGS_DAYS` - Number of days to keep log files. This is to help so you don't fill up your filesystem.
-* `EMWIN_KEEP_PRODUCTS_DAYS` - Number of days to keep product files. This is to help so you don't fill up your filesystem.
-* `EMWIN_BASE_DIR` - Web base directory. For running in Docker, you'll want to use `/var/www/html`.
-* `EMWIN_NPEMWIN_AUTOSTART` - Flag (`0` or `1`) to specify whether you want to run `npemwind` upon startup.
+* `DONT_FORCE_HTTPS` - Specifies whether the UI should generate https:// URLS. Unless you're proxying using certificates, this should be `true`. 
+* `NPEMWIN_CLIENT_SERVERLIST` - Comma-delimited list of one or more servers with their port separated by a colon. (e.g. `host1:port1,host2:port2,...`). You can get a list of current servers [here](https://www.weathermessage.com/Support/EMWINInternetStatus.aspx).
+* `FILE_SAVE_REGEX` - Regular expression used to specify which products you want to save. Default is `.*`. (match all products)
+* `KEEP_LOGS_DAYS` - Number of days to keep log files. This is to help so you don't fill up your filesystem.
+* `KEEP_PRODUCTS_DAYS` - Number of days to keep product files. This is to help so you don't fill up your filesystem.
+* `NPEMWIN_CLIENT_AUTOSTART` - Flag (`0` or `1`) to specify whether you want to run `npemwind` upon startup.
 * `ENABLED_PAN_PLUGINS` - Comma-deleted list of plugins to run. You can leave this blank if you don't want to use the plugin system.
 
 ## Plugins
