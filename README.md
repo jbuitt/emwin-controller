@@ -92,9 +92,7 @@ The following environment variables will need to be set:
 APP_KEY=
 ```
 
-Environment Variables in `.env` that you will need to update:
-
-* `APP_KEY` - Laravel App Key. Step #5 above will generate a key and populate this variable in your `.env` file.
+This is the Application Key required by Laravel. Step #5 above will generate a key and populate this variable in your `.env` file.
 
 Other variables that can be modified from their default values:
 
