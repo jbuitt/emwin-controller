@@ -66,6 +66,9 @@ class ProcessEmwinZipFileJob implements ShouldQueue
         $archiveDirectory = config(
             'emwin-controller.archive_directory'
         );
+        $fileSaveRegex = config(
+            'emwin-controller.file_save_regex'
+        );
         $tempDirectory = config(
             'emwin-controller.download_clients.' . $client . '.temp_directory'
         );
@@ -228,24 +231,30 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                     Log::channel($logChannel)->info('Running dos2unix to remove carriage returns..');
                     exec('/usr/bin/dos2unix ' . $tempFiles[$i] . ' >/dev/null 2>&1');
                 }
-                // Existing file does not exist, attempt to rename (move) it to the product's directory
-                if (!rename($tempFiles[$i], storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile)) {
-                    Log::channel($logChannel)->error('Could not move product file ' . $tempFiles[$i] . ', deleting and continuing..');
+                // Check to make sure the file matches the file save regex
+                if (preg_match('/' . $fileSaveRegex . '/', $productFile)) {
+                    // Existing file does not exist, attempt to rename (move) it to the product's directory
+                    if (!rename($tempFiles[$i], storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile)) {
+                        Log::channel($logChannel)->error('Could not move product file ' . $tempFiles[$i] . ', deleting and continuing..');
+                        unlink($tempFiles[$i]);
+                        continue;
+                    }
+                    // Inventory the new product
+                    Log::channel($logChannel)->info('Inventorying file ' . $productFile . ' (' . $c . ' of ' . count($tempFiles) . ')..');
+                    try {
+                        $product = Product::where('name', '=', $productFile)->firstOrFail();
+                        // Product already exists in database, don't process again
+                        Log::channel($logChannel)->notice('Product already exists in database, skipping.');
+                    } catch (ModelNotFoundException $e) {
+                        // Product doesn't exist, inventory product in database
+                        $product = Product::create([
+                            'name' => $productFile,
+                        ]);
+                        $productsInventoried++;
+                    }
+                } else {
+                    Log::info('Product file does not match file save regex, deleting file.');
                     unlink($tempFiles[$i]);
-                    continue;
-                }
-                // Inventory the new product
-                Log::channel($logChannel)->info('Inventorying file ' . $productFile . ' (' . $c . ' of ' . count($tempFiles) . ')..');
-                try {
-                    $product = Product::where('name', '=', $productFile)->firstOrFail();
-                    // Product already exists in database, don't process again
-                    Log::channel($logChannel)->notice('Product already exists in database, skipping.');
-                } catch (ModelNotFoundException $e) {
-                    // Product doesn't exist, inventory product in database
-                    $product = Product::create([
-                        'name' => $productFile,
-                    ]);
-                    $productsInventoried++;
                 }
                 Log::channel($logChannel)->info('Done.');
             }
