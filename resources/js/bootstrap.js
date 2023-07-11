@@ -31,8 +31,8 @@ window.Pusher = Pusher;
 //     enabledTransports: ['ws', 'wss'],
 // });
 
-// Enable pusher logging - don't include this in production
-// Pusher.logToConsole = true;
+// Enable pusher logging
+Pusher.logToConsole = true;
 
 var pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,

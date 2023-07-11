@@ -82,13 +82,19 @@ docker compose exec -it emwin-controller \
    --force
 ```
 
-9. Create an admin user:
+9. Create the link to the storage:
+
+```
+./vendor/bin/sail artisan storage:link
+```
+
+10. Finally, you can access the dashboard from a browser by going to [http://127.0.0.1:8080](http://127.0.0.1:8080).
+
+You'll need an admin user to log into the dashboard, create one first by running:
 
 ```
 ./vendor/bin/sail artisan emwin-controller:create_admin_user
 ```
-
-10. Finally, you can access the dashboard from a browser by going to [http://127.0.0.1:8080](http://127.0.0.1:8080).
 
 ## .env Environment Variables
 
