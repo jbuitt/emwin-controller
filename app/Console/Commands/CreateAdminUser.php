@@ -51,12 +51,17 @@ class CreateAdminUser extends Command
             }
         }
         // Create the user
-        User::create([
-            'name' => $name,
-            'email' => $email,
-            'password' => Hash::make($password1),
-        ]);
-        print "User created.\n";
+        try {
+            User::create([
+                'name' => $name,
+                'email' => $email,
+                'password' => Hash::make($password1),
+            ]);
+            print "User created.\n";
+        } catch (\Exception $e) {
+            print 'Error: Could not create admin user: (' . $e->getMessage() . ")\n";
+            return 1;
+        }
         // Done!
         return 0;
     }

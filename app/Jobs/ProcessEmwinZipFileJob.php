@@ -226,7 +226,7 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                 // If product is a text file, run dos2unix on it to change \r\n to \n
                 if (preg_match('/\.TXT$/', $productFile)) {
                     Log::channel($logChannel)->info('Running dos2unix to remove carriage returns..');
-                    exec('/usr/bin/dos2unix ' . $tempFiles[$i]);
+                    exec('/usr/bin/dos2unix ' . $tempFiles[$i] . ' >/dev/null 2>&1');
                 }
                 // Existing file does not exist, attempt to rename (move) it to the product's directory
                 if (!rename($tempFiles[$i], storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile)) {
