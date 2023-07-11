@@ -82,7 +82,7 @@ docker compose exec -it emwin-controller \
    --force
 ```
 
-9. Create the link to the storage:
+9. Create the symbolic link so the web server has access to files in the storage directory:
 
 ```
 ./vendor/bin/sail artisan storage:link
