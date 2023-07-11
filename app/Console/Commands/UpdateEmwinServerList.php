@@ -44,16 +44,15 @@ class UpdateEmwinServerList extends Command
     public function handle(): int
     {
         // Get current EMWIN ByteBlaster server list from Weather Message website
+        print "Downloading list of active EMWIN ByteBlaster servers from Weather Message website..\n";
         $serverList = $this->getCurrentEmwinServerList();
-        //var_dump($serverList);
+        // var_dump($serverList);
+        print "Done.\n";
         if (!empty($serverList)) {
-            $servers = implode(',', $serverList);
-            // Update config
-            print "Updating servers to '$servers'..\n";
             // Rewrite the servers.conf file
             $outfile = fopen('/usr/local/etc/npemwin/servers.conf', 'w');
-            foreach ($servers as $hostAndPort) {
-                list($host, $port) = explode(':', $hostAndPort);
+            for ($i=0; $i<count($serverList); $i++) {
+                list($host, $port) = explode(':', $serverList[$i]);
                 fwrite($outfile, "$host\t$port\n");
             }
             fclose($outfile);
@@ -62,11 +61,14 @@ class UpdateEmwinServerList extends Command
                 app()->environmentFilePath(), 
                 str_replace(
                     'NPEMWIN_CLIENT_SERVERLIST=' . config('emwin-controller.download_clients.npemwin.servers'), 
-                    'NPEMWIN_CLIENT_SERVERLIST=' . $serverList, 
+                    'NPEMWIN_CLIENT_SERVERLIST=' . implode(",", $serverList), 
                     file_get_contents(app()->environmentFilePath())
                 )
             );
             Artisan::call('config:cache');
+        } else {
+            print "Error: Server list was empty!\n";
+            return 1;
         }
         // Done!
         return 0;
@@ -92,7 +94,7 @@ class UpdateEmwinServerList extends Command
         $htmlLines = explode("\n", $response->body());
         for ($i=0; $i<count($htmlLines); $i++) {
             //print "**DEBUG** \$htmlLines[$i] = $htmlLines[$i]\n";
-            if (preg_match('/<td width="25%"><font color="Blue">([0-9.]+)<\/font><\/td><td width="35%"><font color="Blue">(.*)<\/font><\/td><td align="center" width="15%"><font color="Blue">(\d+)<\/font><\/td>/', $htmlLines[$i], $matches)) {
+            if (preg_match('/<td width="25%"><font color="Blue">([a-z0-9.]+)<\/font><\/td><td width="35%"><font color="Blue">(.*)<\/font><\/td><td align="center" width="15%"><font color="Blue">(\d+)<\/font><\/td>/', $htmlLines[$i], $matches)) {
                 if ($matches[1] !== '0.0.0.0') {
                     array_push($serverList, $matches[1] . ':' . $matches[3]);
                 }
