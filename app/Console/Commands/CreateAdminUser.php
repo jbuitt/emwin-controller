@@ -13,7 +13,7 @@ class CreateAdminUser extends Command
      *
      * @var string
      */
-    protected $signature = 'emwin-console:create_admin_user';
+    protected $signature = 'emwin-controller:create_admin_user';
 
     /**
      * The console command description.
