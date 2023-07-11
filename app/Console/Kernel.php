@@ -24,18 +24,18 @@ class Kernel extends ConsoleKernel
             ->daily();
 
         // Check to see if either of the text download clients are enabled
-        // if (preg_match('/(ftp|http)-text/', config('emwin-controller.download_clients_enabled'), $matches)) {
-        //     $schedule
-        //         ->command('emwin-controller:run_ingester ' . $matches[1] . '-text')
-        //         ->everyTwoMinutes();
-        // }
+        if (preg_match('/(ftp|http)-text/', config('emwin-controller.download_clients_enabled'), $matches)) {
+            $schedule
+                ->command('emwin-controller:run_ingester ' . $matches[1] . '-text')
+                ->everyTwoMinutes();
+        }
 
         // Check to see if either of the graphics download clients are enabled
-        // if (preg_match('/(ftp|http)-graphics/', config('emwin-controller.download_clients_enabled'), $matches)) {
-        //     $schedule
-        //         ->command('emwin-controller:run_ingester ' . $matches[1] . '-graphics')
-        //         ->everyFifteenMinutes();
-        // }
+        if (preg_match('/(ftp|http)-graphics/', config('emwin-controller.download_clients_enabled'), $matches)) {
+            $schedule
+                ->command('emwin-controller:run_ingester ' . $matches[1] . '-graphics')
+                ->everyFifteenMinutes();
+        }
 
         // Purge old log files
         $schedule
