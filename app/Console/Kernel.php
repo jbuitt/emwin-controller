@@ -4,6 +4,7 @@ namespace App\Console;
 
 use Illuminate\Console\Scheduling\Schedule;
 use Illuminate\Foundation\Console\Kernel as ConsoleKernel;
+use App\Jobs\ProcessEmwinZipFileJob;
 
 class Kernel extends ConsoleKernel
 {
@@ -12,10 +13,29 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule): void
     {
+        // Snapshot data for Horizon
+        $schedule
+            ->command('horizon:snapshot')
+            ->everyFiveMinutes();
+
         // Prune telescope entries
         $schedule
             ->command('telescope:prune')
             ->daily();
+
+        // Check to see if either of the text download clients are enabled
+        // if (preg_match('/(ftp|http)-text/', config('emwin-controller.download_clients_enabled'), $matches)) {
+        //     $schedule
+        //         ->command('emwin-controller:run_ingester ' . $matches[1] . '-text')
+        //         ->everyTwoMinutes();
+        // }
+
+        // Check to see if either of the graphics download clients are enabled
+        // if (preg_match('/(ftp|http)-graphics/', config('emwin-controller.download_clients_enabled'), $matches)) {
+        //     $schedule
+        //         ->command('emwin-controller:run_ingester ' . $matches[1] . '-graphics')
+        //         ->everyFifteenMinutes();
+        // }
 
         // Purge old log files
         $schedule
@@ -26,6 +46,7 @@ class Kernel extends ConsoleKernel
         $schedule
             ->command('emwin-controller:purge_old_products ' . config('emwin-controller.emwin.keep_products_days'))
             ->daily();
+
     }
 
     /**

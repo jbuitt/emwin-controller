@@ -88,7 +88,7 @@ trait DaemonTrait
                     // Change directory to base_path
                     chdir(base_path());
                     // Start NWWS-OI ingester
-                    exec('./artisan emwin-controller:daemon:run-ingester >' . $logFile . ' 2>&1 &', $output, $retval);
+                    exec('./artisan emwin-controller:run_ingester npemwin >' . $logFile . ' 2>&1 &', $output, $retval);
                     // Check return value
                     if ($retval !== 0) {
                         return array(

@@ -133,9 +133,26 @@ return [
             'driver' => 'daily',
             'path' => storage_path('logs/pan_run.log'),
             'level' => env('LOG_LEVEL', 'debug'),
-            'days' => env('EMWIN_KEEP_LOGS_DAYS', 7),
+            'days' => env('KEEP_LOGS_DAYS', 7),
             'replace_placeholders' => true,
         ],
+
+        'emwintextlog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/emwin-text.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('KEEP_LOGS_DAYS', 7),
+            'replace_placeholders' => true,
+        ],
+
+        'emwingraphicslog' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/emwin-graphics.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('KEEP_LOGS_DAYS', 7),
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

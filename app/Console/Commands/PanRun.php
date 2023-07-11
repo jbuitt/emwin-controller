@@ -104,7 +104,7 @@ class PanRun extends Command
             return;
         }
         // Check product file name to see if it matches file save regex
-        if (preg_match('/' . config('emwin-controller.emwin.file_save_regex') . '/', $emwinFileName)) {
+        if (preg_match('/' . config('emwin-controller.file_save_regex') . '/', $emwinFileName)) {
             Log::channel('panrunlog')->info('Generated EMWIN product file name matched file_save_regex.');
             // Check for WFO directory in EMWIN products directory
             if (!file_exists(storage_path('app/public/products/emwin/') . $wfoDir)) {
@@ -127,8 +127,8 @@ class PanRun extends Command
                 return 1;
             }
             // Send product to all enabled PAN plugins
-            if (!is_null(config('emwin-controller.enabled-pan-plugins')) && !empty(config('emwin-controller.enabled-pan-plugins'))) {
-                foreach (explode(',', config('emwin-controller.enabled-pan-plugins')) as $panPlugin) {
+            if (!is_null(config('emwin-controller.enabled_pan_plugins')) && !empty(config('emwin-controller.enabled_pan_plugins'))) {
+                foreach (explode(',', config('emwin-controller.enabled_pan_plugins')) as $panPlugin) {
                     $exitCode = Artisan::call($panPlugin, [
                         'productFile' => $webProduct,
                     ]);

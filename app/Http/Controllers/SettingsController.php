@@ -28,8 +28,8 @@ class SettingsController extends Controller
         // If request to purge all products, do that noew
         if ($request->input('type') === 'purge_all_products') {
             Product::truncate();
-            if (!is_null(config('emwin-controller.emwin.archivedir')) && !empty(config('emwin-controller.emwin.archivedir'))) {
-                chdir(storage_path(config('emwin-controller.emwin.archivedir')));
+            if (!is_null(config('emwin-controller.archive_directory')) && !empty(config('emwin-controller.archive_directory'))) {
+                chdir(storage_path(config('emwin-controller.archive_directory')));
                 exec('rm -rf *');
             }
             return Redirect::route('dashboard');

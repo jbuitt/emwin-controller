@@ -43,7 +43,7 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apt-get update && apt-get install rsyslog -y
+RUN apt-get update && apt-get install rsyslog dos2unix -y
 # COPY fix_rsyslog.sh /usr/local/bin/
 # RUN /usr/local/bin/fix_rsyslog.sh
 
