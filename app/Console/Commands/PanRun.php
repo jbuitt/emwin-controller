@@ -131,6 +131,7 @@ class PanRun extends Command
                 foreach (explode(',', config('emwin-controller.enabled_pan_plugins')) as $panPlugin) {
                     $exitCode = Artisan::call($panPlugin, [
                         'productFile' => $webProduct,
+                        'client' => 'npemwind',
                     ]);
                     if ($exitCode !== 0) {
                         Log::error('panrunlog')->info("There was an error calling $panPlugin.");

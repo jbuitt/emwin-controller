@@ -252,6 +252,18 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                         ]);
                         $productsInventoried++;
                     }
+                    // Send product to all enabled PAN plugins
+                    if (!is_null(config('emwin-controller.enabled_pan_plugins')) && !empty(config('emwin-controller.enabled_pan_plugins'))) {
+                        foreach (explode(',', config('emwin-controller.enabled_pan_plugins')) as $panPlugin) {
+                            $exitCode = Artisan::call($panPlugin, [
+                                'productFile' => $productFile,
+                                'client' => preg_match('/ftp/', $this->client) ? 'php-ftp' : 'curl',
+                            ]);
+                            if ($exitCode !== 0) {
+                                Log::error('panrunlog')->info("There was an error calling $panPlugin.");
+                            }
+                        }
+                    }
                 } else {
                     Log::info('Product file does not match file save regex, deleting file.');
                     unlink($tempFiles[$i]);

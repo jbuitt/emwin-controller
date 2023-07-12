@@ -12,7 +12,7 @@ class ExamplePlugin extends Command
      *
      * @var string
      */
-    protected $signature = 'emwin-controller:pan-plugin:example-plugin {productFile}';
+    protected $signature = 'emwin-controller:pan-plugin:example-plugin {productFile} {client}';
 
     /**
      * The console command description.
@@ -26,8 +26,9 @@ class ExamplePlugin extends Command
      */
     public function handle()
     {
-        // Get the product filename
+        // Get the product filename and the client
         $productFile = $this->argument('productFile');
+        $client = $this->argument('client');
 
         // Log that we're here
         Log::info('In example PAN plugin..');
