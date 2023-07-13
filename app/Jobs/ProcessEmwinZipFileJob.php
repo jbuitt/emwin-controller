@@ -257,7 +257,7 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                     if (!is_null(config('emwin-controller.enabled_pan_plugins')) && !empty(config('emwin-controller.enabled_pan_plugins'))) {
                         foreach (explode(',', config('emwin-controller.enabled_pan_plugins')) as $panPlugin) {
                             $exitCode = Artisan::call($panPlugin, [
-                                'productFile' => $productFile,
+                                'productFile' => storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile,
                                 'client' => preg_match('/ftp/', $this->client) ? 'php-ftp' : 'curl',
                             ]);
                             if ($exitCode !== 0) {
