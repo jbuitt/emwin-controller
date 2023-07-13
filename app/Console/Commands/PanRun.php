@@ -123,7 +123,7 @@ class PanRun extends Command
                 // Broadcast new product arrived event
                 broadcast(new NewProductArrived($dbProduct))->via('pusher');
             } catch (QueryException $e) {
-                Log::error('panrunlog')->info("Could not inventory product: " . $e->getMessage());
+                Log::channel('panrunlog')->info("Could not inventory product: " . $e->getMessage());
                 return 1;
             }
             // Send product to all enabled PAN plugins
@@ -134,7 +134,7 @@ class PanRun extends Command
                         'client' => 'npemwind',
                     ]);
                     if ($exitCode !== 0) {
-                        Log::error('panrunlog')->info("There was an error calling $panPlugin.");
+                        Log::channel('panrunlog')->info("There was an error calling $panPlugin.");
                     }
                 }
             }
