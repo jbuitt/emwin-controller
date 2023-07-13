@@ -265,7 +265,7 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                         }
                     }
                 } else {
-                    Log::info('Product file does not match file save regex, deleting file.');
+                    Log::info('Product file ' . basename($productFile) . ' does not match file save regex, deleting file.');
                     unlink($tempFiles[$i]);
                 }
                 Log::channel($logChannel)->info('Done.');
