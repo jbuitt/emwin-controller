@@ -41,6 +41,7 @@ services:
         volumes:
             - 'sail-mysql:/var/lib/mysql'
             - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
+            - './docker/8.2/rsyslogd/create-syslog-database.sh:/docker-entrypoint-initdb.d/20-create-syslog-database.sh'
         networks:
             - sail
         healthcheck:
@@ -120,7 +121,7 @@ services:
     soketi-proxy:
         image: nginx
         ports:
-            - '${SOKETI_PROXY_PORT:-6002}:6002'
+            - '${SOKETI_PROXY_PORT:-6003}:6002'
         volumes:
             - './docker/8.2/soketi-proxy.conf:/etc/nginx/conf.d/soketi-proxy.conf'
         networks:

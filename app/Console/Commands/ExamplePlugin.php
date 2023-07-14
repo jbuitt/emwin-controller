@@ -12,7 +12,7 @@ class ExamplePlugin extends Command
      *
      * @var string
      */
-    protected $signature = 'emwin-controller:pan-plugin:example-plugin {productFile} {client}';
+    protected $signature = 'emwin-controller:pan-plugin:example_plugin {productFile} {client}';
 
     /**
      * The console command description.

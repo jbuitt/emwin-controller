@@ -43,9 +43,10 @@ RUN apt-get update \
     && apt-get clean \
     && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-RUN apt-get update && apt-get install rsyslog dos2unix -y
-# COPY fix_rsyslog.sh /usr/local/bin/
-# RUN /usr/local/bin/fix_rsyslog.sh
+RUN apt-get update && apt-get install rsyslog rsyslog-mysql dos2unix -y
+COPY rsyslogd/rsyslog.conf /etc/rsyslog.conf
+COPY rsyslogd/mysql.conf /etc/rsyslog.d/
+COPY npemwin/npemwin_2.4.13p1-1_amd64.deb /tmp/
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.2
 
@@ -55,20 +56,13 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 # Install npemwin & its dependencies
 RUN apt-get update
 RUN apt-get install -y libtcl8.6 libwrap0 tcl8.6 tcllib gnuplot
-RUN curl -s -LOJ http://www.noaaport.net/software/packages/npemwin-2.4.13p1/packages/ubuntu-18.04/amd64/npemwin_2.4.13p1-1_amd64.deb
-RUN dpkg -i npemwin_2.4.13p1-1_amd64.deb
+RUN dpkg -i /tmp/npemwin_2.4.13p1-1_amd64.deb
 
 # Copy npemwin config files over
 COPY npemwin/site/features.conf /usr/local/etc/npemwin/site/
 COPY npemwin/site/panfilter.conf /usr/local/etc/npemwin/site/
 COPY npemwin/site/panfilter.rc /usr/local/etc/npemwin/site/
 COPY npemwin/servers.conf /usr/local/etc/npemwin/
-
-# Copy over rsyslog filters
-# COPY rsyslogd/99-bbserver.conf /etc/rsyslog.d/99-bbserver.conf
-# COPY rsyslogd/99-npemwind.conf /etc/rsyslog.d/99-npemwind.conf
-# COPY rsyslogd/99-panfilter.conf /etc/rsyslog.d/99-panfilter.conf
-# COPY rsyslogd/99-qrunner.conf /etc/rsyslog.d/99-qrunner.conf
 
 # Copy over script to fix noaaport user
 COPY fix_noaaport_user.sh /usr/local/bin/

@@ -54,7 +54,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['single'],
+            'channels' => ['database', 'daily'],
             'ignore_exceptions' => false,
         ],
 
@@ -127,7 +127,15 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
-        // Custom log files
+        // Custom log channels
+
+        'database' => [
+            'driver' => 'custom',
+            'via' => danielme85\LaravelLogToDB\LogToDbHandler::class,
+            'name' => 'Database Logging',
+            'level' => env('APP_LOG_LEVEL', 'debug'),
+            'connection' => 'default',
+        ],
 
         'panrunlog' => [
             'driver' => 'daily',

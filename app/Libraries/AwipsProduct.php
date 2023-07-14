@@ -176,10 +176,19 @@ class AwipsProduct
     /////////////////////////////////////////////////////////////////////////////////
     public function getWfoInfo()
     {
-        if (preg_match('/[A-Z0-9]{5,6}\.TXT/', basename($this->fileName))) {
-            $abbr = substr(basename($this->fileName, '.TXT'), 3, 3);
+        if (preg_match('/\/tmp\/npemwin\.[a-f0-9]+\/([A-Z0-9]{3})[A-Z]{2,3}\.TXT/', $this->fileName, $matches)) {
+            $abbr = $matches[1];
+        } elseif (preg_match('/\/var\/npemwin\/files\/txt\/[a-z]{1}([a-z0-9]{3})\/[a-z0-9.]+/', $this->fileName, $matches)) {
+            $abbr = $matches[1];
         } else {
-            $abbr = substr(strtoupper((explode('/', $this->fileName)[5])), 1, 3);
+            return [
+                'abbr' => 'XXX',
+                'fullname' => 'n/a',
+                'state' => 'US',
+                'tz' => '-',
+                'url' => 'n/a',
+                'rid' => 'n/a',
+            ];
         }
         try {
             $wfo = Wfo::where('abbr', '=', $abbr)->firstOrFail();
