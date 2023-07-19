@@ -32,7 +32,7 @@ window.Pusher = Pusher;
 // });
 
 // Enable pusher logging
-Pusher.logToConsole = true;
+// Pusher.logToConsole = true;
 
 var pusher = new Pusher(import.meta.env.VITE_PUSHER_APP_KEY, {
     cluster: import.meta.env.VITE_PUSHER_APP_CLUSTER,

@@ -1,8 +1,8 @@
 {
-    "name": "laravel/laravel",
+    "name": "jbuitt/emwin-controller",
     "type": "project",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "description": "The EMWIN Controller.",
+    "keywords": ["framework", "laravel", "emwin"],
     "license": "MIT",
     "require": {
         "php": "^8.1",

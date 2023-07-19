@@ -121,7 +121,7 @@ services:
     soketi-proxy:
         image: nginx
         ports:
-            - '${SOKETI_PROXY_PORT:-6003}:6002'
+            - '${SOKETI_PROXY_PORT:-6002}:6002'
         volumes:
             - './docker/8.2/soketi-proxy.conf:/etc/nginx/conf.d/soketi-proxy.conf'
         networks:

@@ -39,12 +39,12 @@ class Kernel extends ConsoleKernel
 
         // Purge old log files
         $schedule
-            ->command('emwin-controller:purge_old_logs ' . config('emwin-controller.emwin.keep_logs_days'))
+            ->command('emwin-controller:purge_old_logs ' . config('emwin-controller.keep_logs_days'))
             ->daily();
 
         // Purge old products
         $schedule
-            ->command('emwin-controller:purge_old_products ' . config('emwin-controller.emwin.keep_products_days'))
+            ->command('emwin-controller:purge_old_products ' . config('emwin-controller.keep_products_days'))
             ->daily();
 
     }

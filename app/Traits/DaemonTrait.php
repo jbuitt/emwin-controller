@@ -101,8 +101,8 @@ trait DaemonTrait
                             ),
                         );
                     }
-                    // Loop for 10 seconds or until process starts
-                    for ($i=0; $i<10; $i++) {
+                    // Loop for 5 seconds or until process starts
+                    for ($i=0; $i<5; $i++) {
                         exec("ps -ef | grep '[n]pemwind -F'", $output);
                         if (!empty($output) && file_exists($pidFile)) {
                             $pid = intval(file_get_contents($pidFile));
@@ -128,7 +128,7 @@ trait DaemonTrait
                             'message' => 'Server Error',
                             'details' => array(
                                 'status' => 'Error',
-                                'result' => "The process did not start after 10 seconds",
+                                'result' => "The process did not start after 5 seconds",
                                 'pid' => -1,
                             ),
                         );
@@ -155,7 +155,7 @@ trait DaemonTrait
                 $pid = file_get_contents($pidFile);
                 exec('kill -TERM ' . $pid);
                 // Wait until process stops and PID goes away
-                for ($i=0; $i<10; $i++) {
+                for ($i=0; $i<5; $i++) {
                     // Sleep for 1 second
                     sleep(1);
                     // Check for running process
@@ -195,7 +195,7 @@ trait DaemonTrait
                         'message' => 'Server Error',
                         'details' => array(
                             'status' => 'Error',
-                            'result' => "The process did not stop after 10 seconds",
+                            'result' => "The process did not stop after 5 seconds",
                             'pid' => -1,
                         ),
                     );
