@@ -15,6 +15,8 @@ class SyslogTable extends DataTableComponent
         $this->setPrimaryKey('ID');
         $this->setDefaultSort('ReceivedAt', 'desc');
         $this->setRefreshTime(2000);
+        // Set empty message
+        $this->setEmptyMessage('No system logs have been generated yet');
     }
 
     public function columns(): array

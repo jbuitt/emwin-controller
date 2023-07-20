@@ -6,7 +6,6 @@
     "license": "MIT",
     "require": {
         "php": "^8.1",
-        "danielme85/laravel-log-to-db": "^4.0",
         "guzzlehttp/guzzle": "^7.2",
         "laravel/framework": "^10.8",
         "laravel/horizon": "^5.17",
@@ -14,6 +13,7 @@
         "laravel/tinker": "^2.8",
         "livewire/livewire": "^2.12",
         "nelexa/zip": "^4.0",
+        "opcodesio/log-viewer": "^2.5",
         "pusher/pusher-php-server": "^7.2",
         "rappasoft/laravel-livewire-tables": "^2.14",
         "wire-elements/modal": "^1.0"

@@ -42,10 +42,28 @@
                             {{ __('Settings') }}
                         </x-dropdown-link>
 
-                        <x-dropdown-link :href="route('logs.view')">
-                            {{ __('Logs') }}
+                        <x-dropdown-link :href="route('app-logs.view')">
+                            {{ __('App Logs') }}
                         </x-dropdown-link>
 
+                        <x-dropdown-link :href="route('system-logs.view')">
+                            {{ __('System Logs') }}
+                        </x-dropdown-link>
+
+                        <x-dropdown-divider />
+
+                        <x-dropdown-link :href="route('horizon')" target="_newwin">
+                            {{ __('Horizon') }} &nbsp; <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </x-dropdown-link>
+
+                        @if (config('app.env') === 'local')
+                        <x-dropdown-link :href="route('telescope')" target="_newwin">
+                            {{ __('Telescope') }} &nbsp; <i class="fa-solid fa-arrow-up-right-from-square"></i>
+                        </x-dropdown-link>
+                        @endif
+
+                        <x-dropdown-divider />
+                        
                         <!-- Authentication -->
                         <form method="POST" action="{{ route('logout') }}">
                             @csrf

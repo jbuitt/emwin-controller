@@ -54,7 +54,7 @@ return [
     'channels' => [
         'stack' => [
             'driver' => 'stack',
-            'channels' => ['database', 'daily'],
+            'channels' => ['daily'],
             'ignore_exceptions' => false,
         ],
 
@@ -128,14 +128,6 @@ return [
         ],
 
         // Custom log channels
-
-        'database' => [
-            'driver' => 'custom',
-            'via' => danielme85\LaravelLogToDB\LogToDbHandler::class,
-            'name' => 'Database Logging',
-            'level' => env('APP_LOG_LEVEL', 'debug'),
-            'connection' => 'default',
-        ],
 
         'panrunlog' => [
             'driver' => 'daily',
