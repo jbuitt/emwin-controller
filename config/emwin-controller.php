@@ -38,7 +38,7 @@ return [
         'npemwin' => [
             'client_cmd' => env('NPEMWIND_CMD', '/usr/local/sbin/npemwind -F'),
             'servers' => env('NPEMWIN_CLIENT_SERVERLIST', 'emwin.ewarn.org:2211'),
-            'autostart' => env('NPEMWIN_CLIENT_AUTOSTART', 0),
+            'autostart' => env('NPEMWIN_CLIENT_AUTOSTART', false),
         ],
     
         'ftp' => [

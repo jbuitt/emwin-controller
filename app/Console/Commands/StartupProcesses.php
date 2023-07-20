@@ -42,7 +42,7 @@ class StartupProcesses extends Command
     public function handle()
     {
         // If autostart is enabled, then start up the daemon
-        if (intval(config('emwin-controller.download_clients.npemwin.autostart'))) {
+        if (config('emwin-controller.download_clients.npemwin.autostart')) {
             // Execute command
             print "Auto-starting config..\n";
             print json_encode($this->executeArtisanCommand('start')) . "\n";
