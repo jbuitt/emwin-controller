@@ -67,7 +67,7 @@ docker run --rm --interactive --tty \
   emwin-controller:latest
 ```
 
-7. Next, download the other containers and start everything up by running:
+7. Next, download the other container images and start everything up by running:
 
 ```
 docker compose up -d
