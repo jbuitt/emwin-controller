@@ -76,8 +76,7 @@ docker compose up -d
 8. Now, you migrate and seed the database:
 
 ```
-docker compose exec -it emwin-controller \
-   /var/www/html/artisan migrate \
+./vendor/bin/sail artisan migrate \
    --seed \
    --force
 ```
