@@ -122,14 +122,25 @@ return [
 
     /*
     |--------------------------------------------------------------------------
-    | File Save Regex
+    | Text File Save Regex
     |--------------------------------------------------------------------------
     |
     | This value is the regular expression used to determine if the EMWIN
     | product file should be saved. Defaults to saving all products.
     |
     */
-    'file_save_regex' => env('FILE_SAVE_REGEX', '.*'),
+    'text_file_save_regex' => env('TEXT_FILE_SAVE_REGEX', '.*'),
+
+    /*
+    |--------------------------------------------------------------------------
+    | Graphic File Save Regex
+    |--------------------------------------------------------------------------
+    |
+    | This value is the regular expression used to determine if the EMWIN
+    | product file should be saved. Defaults to saving all products.
+    |
+    */
+    'graphic_file_save_regex' => env('GRAPHIC_FILE_SAVE_REGEX', '.*'),
 
     /*
     |--------------------------------------------------------------------------

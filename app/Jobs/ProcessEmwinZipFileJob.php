@@ -67,8 +67,11 @@ class ProcessEmwinZipFileJob implements ShouldQueue
         $archiveDirectory = config(
             'emwin-controller.archive_directory'
         );
-        $fileSaveRegex = config(
-            'emwin-controller.file_save_regex'
+        $textFileSaveRegex = config(
+            'emwin-controller.text_file_save_regex'
+        );
+        $graphicFileSaveRegex = config(
+            'emwin-controller.graphic_file_save_regex'
         );
         $tempDirectory = config(
             'emwin-controller.download_clients.' . $client . '.temp_directory'
@@ -232,8 +235,17 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                     Log::channel($logChannel)->info('Running dos2unix to remove carriage returns..');
                     exec('/usr/bin/dos2unix ' . $tempFiles[$i] . ' >/dev/null 2>&1');
                 }
-                // Check to make sure the file matches the file save regex
-                if (preg_match('/' . $fileSaveRegex . '/', $productFile)) {
+                $processFileFlag = false;
+                // If the file is a text file, check to make sure the file matches the text file save regex
+                if (preg_match('/\.TXT$/', $productFile) && preg_match('/' . $textFileSaveRegex . '/', $productFile)) {
+                    $processFileFlag = true;
+                }
+                // If the file is a graphic file, check to make sure the file matches the graphic file save regex
+                if (preg_match('/\.(JPG|GIF|PNG)$/', $productFile) && preg_match('/' . $graphicFileSaveRegex . '/', $productFile)) {
+                    $processFileFlag = true;
+                }
+                // If file should be processed, do it
+                if ($processFileFlag) {
                     // Existing file does not exist, attempt to rename (move) it to the product's directory
                     if (!rename($tempFiles[$i], storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile)) {
                         Log::channel($logChannel)->error('Could not move product file ' . $tempFiles[$i] . ', deleting and continuing..');
