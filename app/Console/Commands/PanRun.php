@@ -58,7 +58,7 @@ class PanRun extends Command
         } elseif (preg_match('/\.txt$/', $productFile)) {
             $this->copyProductToWebDir($productFile);
         } elseif (preg_match('/\.(gif|jpg|png)$/', $productFile)) {
-            Log::channel('panrunlog')->info('Product is an image, skipping.');
+            Log::channel('panrunlog')->info('Product is an graphic, skipping.');
         }
         // Done!
         Log::channel('panrunlog')->info('PAN RUN Script Complete');
@@ -103,9 +103,9 @@ class PanRun extends Command
             Log::channel('panrunlog')->info('EMWIN file name is blank, skipping.');
             return;
         }
-        // Check product file name to see if it matches file save regex
-        if (preg_match('/' . config('emwin-controller.file_save_regex') . '/', $emwinFileName)) {
-            Log::channel('panrunlog')->info('Generated EMWIN product file name matched file_save_regex.');
+        // Check product file name to see if it matches text file save regex
+        if (preg_match('/' . config('emwin-controller.text_file_save_regex') . '/', $emwinFileName)) {
+            Log::channel('panrunlog')->info('Generated EMWIN product file name matched text_file_save_regex.');
             // Check for WFO directory in EMWIN products directory
             if (!file_exists(storage_path('app/public/products/emwin/') . $wfoDir)) {
                 Log::channel('panrunlog')->info('Directory ' . storage_path('app/public/products/emwin/') . $wfoDir . ' does not exist, creating..');
