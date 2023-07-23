@@ -19,9 +19,11 @@ class Kernel extends ConsoleKernel
             ->everyFiveMinutes();
 
         // Prune telescope entries
-        $schedule
-            ->command('telescope:prune')
-            ->daily();
+        if ($this->app->environment('local')) {
+            $schedule
+                ->command('telescope:prune')
+                ->daily();
+        }
 
         // Check to see if either of the text download clients are enabled
         if (preg_match('/(ftp|http)-text/', config('emwin-controller.download_clients_enabled'), $matches)) {
