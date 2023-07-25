@@ -273,7 +273,7 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                                 'client' => preg_match('/ftp/', $this->client) ? 'php-ftp' : 'curl',
                             ]);
                             if ($exitCode !== 0) {
-                                Log::error('panrunlog')->info("There was an error calling $panPlugin.");
+                                Log::channel($logChannel)->info("There was an error calling $panPlugin.");
                             }
                         }
                     }
