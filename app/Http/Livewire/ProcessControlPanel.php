@@ -33,7 +33,7 @@ class ProcessControlPanel extends Component
                 // Turn on scheduled downloading
                 $this->enableScheduledDownloads();
                 sleep(2);
-                $this->processStatus = 'Enabled';
+                $this->processStatus = 'Running';
             }
         } elseif ($this->processStatus === 'Running') {
             if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
@@ -48,7 +48,7 @@ class ProcessControlPanel extends Component
                 // Turn off scheduled downloading
                 $this->disableScheduledDownloads();
                 sleep(2);
-                $this->processStatus = 'Disabled';
+                $this->processStatus = 'Stopped';
             }
         } else {
             $this->processStatus = 'Error';
@@ -62,7 +62,11 @@ class ProcessControlPanel extends Component
      */
     public function mount()
     {
-        $results = $this->performDeamonCommand('status');
+        if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
+            $results = $this->performDeamonCommand('status');
+        } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
+            $results = $this->checkScheduledDownloads();
+        }
         $this->processStatus = $results['details']['status'];
         // $this->processResult = $results['details']['result'];
         $this->buttonLabel = $this->processStatus === 'Running' ? 'Stop' : 'Start';

@@ -206,6 +206,20 @@ trait DaemonTrait
     }
 
     /**
+     * Check the status of scheduled downloads
+     */
+    public function checkScheduledDownloads(): array
+    {
+        return [
+            'statusCode' => 200,
+            'message' => 'OK',
+            'details' => [
+                'status' => boolval(Cache::get('scheduled_downloads_flag', false)) ? 'Running' : 'Stopped',
+            ],
+        ];
+    }
+
+    /**
      * Enable the scheduling of downloads (ftp and/or http)
      */
     public function enableScheduledDownloads(): void
