@@ -32,6 +32,8 @@ class ProcessControlPanel extends Component
             } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
                 // Turn on scheduled downloading
                 $this->enableScheduledDownloads();
+                sleep(2);
+                $this->processStatus = 'Enabled';
             }
         } elseif ($this->processStatus === 'Running') {
             if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
@@ -45,6 +47,8 @@ class ProcessControlPanel extends Component
             } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
                 // Turn off scheduled downloading
                 $this->disableScheduledDownloads();
+                sleep(2);
+                $this->processStatus = 'Disabled';
             }
         } else {
             $this->processStatus = 'Error';
