@@ -214,7 +214,7 @@ trait DaemonTrait
             'statusCode' => 200,
             'message' => 'OK',
             'details' => [
-                'status' => boolval(Cache::get('scheduled_downloads_flag', false)) ? 'Running' : 'Stopped',
+                'status' => boolval(Cache::get('scheduled_downloads_flag', '0')) ? 'Running' : 'Stopped',
             ],
         ];
     }
@@ -224,7 +224,7 @@ trait DaemonTrait
      */
     public function enableScheduledDownloads(): void
     {
-        Cache::put('scheduled_downloads_flag', 'true');
+        Cache::put('scheduled_downloads_flag', '1');
     }
 
     /**
@@ -232,7 +232,7 @@ trait DaemonTrait
      */
     public function disableScheduledDownloads(): void
     {
-        Cache::put('scheduled_downloads_flag', 'false');
+        Cache::put('scheduled_downloads_flag', '0');
     }
 
 }

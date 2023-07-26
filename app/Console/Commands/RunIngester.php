@@ -87,7 +87,7 @@ class RunIngester extends Command
             case 'ftp-graphics':
             case 'http-text':
             case 'http-graphics':
-                if (boolval(Cache::get('scheduled_downloads_flag', false))) {
+                if (boolval(Cache::get('scheduled_downloads_flag', '0'))) {
                     Log::info('scheduled_downloads_flag is true, so the ' . $client . ' download client is being dispatched..');
                     ProcessEmwinZipFileJob::dispatch($client, time());
                 } else {
