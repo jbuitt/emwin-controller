@@ -33,6 +33,7 @@ class ProcessControlPanel extends Component
                 // Turn on scheduled downloading
                 $this->enableScheduledDownloads();
                 sleep(2);
+                $this->buttonLabel = 'Stop';
                 $this->processStatus = 'Running';
             }
         } elseif ($this->processStatus === 'Running') {
@@ -48,6 +49,7 @@ class ProcessControlPanel extends Component
                 // Turn off scheduled downloading
                 $this->disableScheduledDownloads();
                 sleep(2);
+                $this->buttonLabel = 'Start';
                 $this->processStatus = 'Stopped';
             }
         } else {
