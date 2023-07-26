@@ -3,7 +3,7 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use App\Jobs\ProcessEmwinZipFileJob;
@@ -82,13 +82,17 @@ class RunIngester extends Command
                     return 1;
                 }
                 break;
-            
+
             case 'ftp-text':
             case 'ftp-graphics':
             case 'http-text':
             case 'http-graphics':
-                Log::info('The ' . $client . ' download client is being dispatched..');
-                ProcessEmwinZipFileJob::dispatch($client, time());
+                if (boolval(Cache::get('scheduled_downloads_flag', false))) {
+                    Log::info('scheduled_downloads_flag is true, so the ' . $client . ' download client is being dispatched..');
+                    ProcessEmwinZipFileJob::dispatch($client, time());
+                } else {
+                    Log::info('The scheduled_downloads_flag is false, not dispatching..');
+                }
                 break;
 
             default:

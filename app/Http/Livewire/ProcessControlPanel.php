@@ -19,24 +19,33 @@ class ProcessControlPanel extends Component
 
     public function toggleProcess()
     {
-        $this->disabledFlag = true;
-        $this->buttonClasses = 'bg-gray-500 hover:bg-gray-700';
+        // $this->buttonClasses = 'bg-gray-500 hover:bg-gray-700';
         if ($this->processStatus === 'Stopped') {
-            // Start process
-            $results = $this->performDeamonCommand('start');
-            $this->processStatus = $results['details']['status'];
-            // $this->processResult = $results['details']['result'];
-            $this->buttonLabel = 'Stop';
-            // $this->buttonClasses = 'bg-red-500 hover:bg-red-700';
-            $this->buttonIconClass = 'fa-stop';
+            if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
+                // Start process
+                $results = $this->performDeamonCommand('start');
+                $this->processStatus = $results['details']['status'];
+                // $this->processResult = $results['details']['result'];
+                $this->buttonLabel = 'Stop';
+                // $this->buttonClasses = 'bg-red-500 hover:bg-red-700';
+                $this->buttonIconClass = 'fa-stop';
+            } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
+                // Turn on scheduled downloading
+                $this->enableScheduledDownloads();
+            }
         } elseif ($this->processStatus === 'Running') {
-            // Stop process
-            $results = $this->performDeamonCommand('stop');
-            $this->processStatus = $results['details']['status'];
-            // $this->processResult = $results['details']['result'];
-            $this->buttonLabel = 'Start';
-            // $this->buttonClasses = 'bg-green-500 hover:bg-green-700';
-            $this->buttonIconClass = 'fa-play';
+            if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
+                // Stop process
+                $results = $this->performDeamonCommand('stop');
+                $this->processStatus = $results['details']['status'];
+                // $this->processResult = $results['details']['result'];
+                $this->buttonLabel = 'Start';
+                // $this->buttonClasses = 'bg-green-500 hover:bg-green-700';
+                $this->buttonIconClass = 'fa-play';
+            } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
+                // Turn off scheduled downloading
+                $this->disableScheduledDownloads();
+            }
         } else {
             $this->processStatus = 'Error';
             // $this->processResult = 'Invalid config command';

@@ -2,6 +2,7 @@
 
 namespace App\Traits;
 
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Carbon\Carbon;
 
@@ -203,4 +204,21 @@ trait DaemonTrait
                 break;
         }
     }
+
+    /**
+     * Enable the scheduling of downloads (ftp and/or http)
+     */
+    public function enableScheduledDownloads(): void
+    {
+        Cache::put('scheduled_downloads_flag', 'true');
+    }
+
+    /**
+     * Disable the scheduling of downloads (ftp and/or http)
+     */
+    public function disableScheduledDownloads(): void
+    {
+        Cache::put('scheduled_downloads_flag', 'false');
+    }
+
 }
