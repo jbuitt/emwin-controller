@@ -2,6 +2,7 @@
 
 namespace App\Http\Livewire;
 
+use Illuminate\Support\Facades\Log;
 use Livewire\Component;
 use App\Traits\DaemonTrait;
 
@@ -21,6 +22,7 @@ class ProcessControlPanel extends Component
     {
         // $this->buttonClasses = 'bg-gray-500 hover:bg-gray-700';
         if ($this->processStatus === 'Stopped') {
+            Log::info('Enabled scheduled download of products.');
             if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
                 // Start process
                 $results = $this->performDeamonCommand('start');
@@ -37,6 +39,7 @@ class ProcessControlPanel extends Component
                 $this->processStatus = 'Running';
             }
         } elseif ($this->processStatus === 'Running') {
+            Log::info('Disabled scheduled download of products.');
             if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
                 // Stop process
                 $results = $this->performDeamonCommand('stop');
