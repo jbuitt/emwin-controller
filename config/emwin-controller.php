@@ -17,7 +17,7 @@ return [
     | Download Clients Enabled
     |--------------------------------------------------------------------------
     |
-    | This value is a comma-delimited list of EMWIN download clients that 
+    | This value is a comma-delimited list of EMWIN download clients that
     | should be enabled. Valid values are:
     |
     | * npemwin
@@ -50,7 +50,7 @@ return [
             'servers' => env('NPEMWIN_CLIENT_SERVERLIST', 'emwin.ewarn.org:2211'),
             'autostart' => env('NPEMWIN_CLIENT_AUTOSTART', false),
         ],
-    
+
         'ftp' => [
             'server_hostname' => env('FTP_CLIENT_HOSTNAME', 'tgftp.nws.noaa.gov'),
             'server_protocol' => 'ftp',
@@ -61,6 +61,7 @@ return [
             'text_products_file' => env('FTP_CLIENT_TEXT_PRODUCTS_FILE', 'txtmin02.zip'),
             'graphic_products_file' => env('FTP_CLIENT_GRAPHIC_PRODUCTS_FILE', 'imgmin15.zip'),
             'temp_directory' => env('FTP_CLIENT_TEMP_DIR', 'app/public/temp'),
+            'autostart' => env('FTP_CLIENT_AUTOSTART', false),
         ],
 
         'http' => [
@@ -73,6 +74,7 @@ return [
             'text_products_file' => env('HTTP_CLIENT_TEXT_PRODUCTS_FILE', 'txtmin02.zip'),
             'graphic_products_file' => env('HTTP_CLIENT_GRAPHIC_PRODUCTS_FILE', 'imgmin15.zip'),
             'temp_directory' => env('HTTP_CLIENT_TEMP_DIR', 'app/public/temp'),
+            'autostart' => env('HTTP_CLIENT_AUTOSTART', false),
         ],
 
     ],
@@ -82,7 +84,7 @@ return [
     | Archive Directory
     |--------------------------------------------------------------------------
     |
-    | This value is the relative base path within the storage/ directory for 
+    | This value is the relative base path within the storage/ directory for
     | where EMWIN products are saved.
     |
     */
@@ -93,7 +95,7 @@ return [
     | PAN Run
     |--------------------------------------------------------------------------
     |
-    | This value is the full path to the PAN (Product Arrival Notification) 
+    | This value is the full path to the PAN (Product Arrival Notification)
     | script. It typically does not need to be changed from its default
     | value.
     |
