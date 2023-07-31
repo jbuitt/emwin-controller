@@ -20,7 +20,7 @@ class ProductTable extends DataTableComponent
                 return '#';
             })->setTrAttributes(function($row, $index) {
                 return [
-                    'onClick' => "window.open('/view-product/{$row->id}', '_blank', \"popup=yes,width=925,height=700\")",
+                    'onClick' => "window.open('/view-product/{$row->id}', '_blank', \"popup=yes,width=925,height=750\")",
                 ];
             });
         // Set default sorting status for created_at
