@@ -440,6 +440,9 @@ class AwipsProduct
             }
             //print "**DEBUG** \$hdr1 = $hdr1\n";
             //print "**DEBUG** \$hdr2 = $hdr2\n";
+            if ($i >= count($this->fileContents) || !isset($this->fileContents[$i])) {
+                break;
+            }
             // If we found the WMO header and the AWIPS ID, start scanning the product info
             if ($hdr1 >= 0 && $hdr2 >= 0) {
                 // Check for zone header
@@ -453,7 +456,7 @@ class AwipsProduct
                     }
                     // Loop and read lines until you find the end of the zone header
                     $rc = 0;
-                    while(1) {
+                    while (true) {
                         //print "**DEBUG** \$prod_lines[$i] = $prod_lines[$i]\n";
                         $zone .= $this->fileContents[$i];
                         if (preg_match('/[-]*\d{6}[-]*\s*$/', $this->fileContents[$i])) {
