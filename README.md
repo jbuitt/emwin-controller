@@ -3,7 +3,7 @@
 
 This software provides a download client and web dashboard for downloading "products" from EMWIN ([Emergency Managers Weather Information Network](https://www.nws.noaa.gov/emwin/)). EMWIN is a satellite data collection and dissemination system operated by the [National Weather Service](http://weather.gov). Its purpose is to provide state and federal government, commercial users, media and private citizens with timely delivery of meteorological, hydrological, climatological and geophysical information. Besides satellite transmission, EMWIN is also able to disseminate its products through the use of [ByteBlaster](https://www.weather.gov/emwin/byteblaster) servers. The National Weather Service stopped hosting their own ByteBlaster servers several years ago, however several individuals have resurrected a new network of public ByteBlaster servers.
 
-This client was developed and tested on [Ubuntu 22.04](http://ubuntu.com) (64-bit) and Raspberry Pi OS** (32-bit) using the following open-source software stack:
+This client was developed and tested on [Ubuntu 22.04](http://ubuntu.com) (64-bit) and Raspberry Pi OS (64-bit) using the following open-source software stack:
 
 * [Docker](https://www.docker.com/) - Container tool
 * [docker-compose](https://docs.docker.com/compose/) - Multi-container orchestration tool
@@ -18,8 +18,6 @@ This client was developed and tested on [Ubuntu 22.04](http://ubuntu.com) (64-bi
 * [Redis](https://redis.io/) - Key/value store
 * [Soketi](https://docs.soketi.app/) - Websocket server
 * [NOAAPort Npemwin](http://www.noaaport.net/projects/emwin.html) - EMWIN ByteBlaster client. 
-
-** The [32-bit version](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit) of Raspberry Pi OS must be used due to Npemwin not having an arm64 package available.
 
 ## How do I run it?
 

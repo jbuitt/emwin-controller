@@ -46,8 +46,8 @@ RUN apt-get update \
 RUN apt-get update && apt-get install rsyslog rsyslog-mysql dos2unix -y
 COPY rsyslogd/rsyslog.conf /etc/rsyslog.conf
 COPY rsyslogd/mysql.conf /etc/rsyslog.d/
-COPY npemwin/npemwin_2.4.13p1-1_amd64.deb /tmp/
-COPY npemwin/npemwin_2.4.13p1-1_armhf.deb /tmp/
+COPY npemwin/npemwin_3.0.1p1-1_amd64.deb /tmp/
+COPY npemwin/npemwin_3.0.1p1-1_arm64.deb /tmp/
 
 RUN setcap "cap_net_bind_service=+ep" /usr/bin/php8.2
 
@@ -57,7 +57,7 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 # Install npemwin & its dependencies
 RUN apt-get update
 RUN apt-get install -y libtcl8.6 libwrap0 tcl8.6 tcllib gnuplot
-RUN dpkg -i /tmp/npemwin_2.4.13p1-1_$(dpkg --print-architecture).deb
+RUN dpkg -i /tmp/npemwin_3.0.1p1-1_$(dpkg --print-architecture).deb
 
 # Copy npemwin config files over
 COPY npemwin/site/features.conf /usr/local/etc/npemwin/site/
