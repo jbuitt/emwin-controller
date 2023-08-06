@@ -57,7 +57,7 @@ RUN useradd -ms /bin/bash --no-user-group -g $WWWGROUP -u 1337 sail
 # Install npemwin & its dependencies
 RUN apt-get update
 RUN apt-get install -y libtcl8.6 libwrap0 tcl8.6 tcllib gnuplot
-RUN dpkg -i /tmp/npemwin_2.4.13p1-1_$(uname -m).deb
+RUN dpkg -i /tmp/npemwin_2.4.13p1-1_$(dpkg --print-architecture).deb
 
 # Copy npemwin config files over
 COPY npemwin/site/features.conf /usr/local/etc/npemwin/site/
