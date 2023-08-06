@@ -7,14 +7,14 @@ This client was developed and tested on [Ubuntu 22.04](http://ubuntu.com) (64-bi
 
 * [Docker](https://www.docker.com/) - Container tool
 * [docker-compose](https://docs.docker.com/compose/) - Multi-container orchestration tool
-* [PHP](https://www.php.net/) - Scripting Language
-* [Composer](http://getcomposer.org/) - Dependency Manager for PHP
-* [Laravel](https://laravel.com/) - PHP Framework
+* [PHP](https://www.php.net/) - Scripting language
+* [Composer](http://getcomposer.org/) - Dependency manager for PHP
+* [Laravel](https://laravel.com/) - PHP framework
 * [Sail](https://laravel.com/docs/10.x/sail) - Laravel command-line interface for Laravel's Docker environment 
-* [Livewire](https://laravel-livewire.com/) - Laravel dynamic Front-end framework
+* [Livewire](https://laravel-livewire.com/) - Laravel dynamic front-end framework
 * [NodeJS](https://nodejs.org/en) - JavaScript runtime environment
 * [TailwindCSS](https://tailwindcss.com/) - CSS framework
-* [MySQL](https://www.mysql.com/) - Relational Database
+* [MySQL](https://www.mysql.com/) - Relational database
 * [Redis](https://redis.io/) - Key/value store
 * [Soketi](https://docs.soketi.app/) - Websocket server
 * [NOAAPort Npemwin](http://www.noaaport.net/projects/emwin.html) - EMWIN ByteBlaster client. 
