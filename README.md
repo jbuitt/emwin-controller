@@ -10,8 +10,8 @@ This client was developed and tested on [Ubuntu 22.04](http://ubuntu.com) (64-bi
 * [PHP](https://www.php.net/) - Scripting Language
 * [Composer](http://getcomposer.org/) - Dependency Manager for PHP
 * [Laravel](https://laravel.com/) - PHP Framework
-* [Sail](https://laravel.com/docs/10.x/sail) - Laravel Sail command-line interface for Laravel's Docker environment 
-* [Livewire](https://laravel-livewire.com/) - Laravel Dynamic Front-end Framework
+* [Sail](https://laravel.com/docs/10.x/sail) - Laravel command-line interface for Laravel's Docker environment 
+* [Livewire](https://laravel-livewire.com/) - Laravel dynamic Front-end framework
 * [NodeJS](https://nodejs.org/en) - JavaScript runtime environment
 * [TailwindCSS](https://tailwindcss.com/) - CSS framework
 * [MySQL](https://www.mysql.com/) - Relational Database
