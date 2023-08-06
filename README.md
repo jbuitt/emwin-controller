@@ -19,7 +19,7 @@ This client was developed and tested on [Ubuntu 22.04](http://ubuntu.com) (64-bi
 * [Soketi](https://docs.soketi.app/) - Websocket server
 * [NOAAPort Npemwin](http://www.noaaport.net/projects/emwin.html) - EMWIN ByteBlaster client. 
 
-** The [32-bit version](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit) of Raspberry Pi OS must be used due to Npemwin not having an arm64 package. 
+** The [32-bit version](https://www.raspberrypi.com/software/operating-systems/#raspberry-pi-os-32-bit) of Raspberry Pi OS must be used due to Npemwin not having an arm64 package available.
 
 ## How do I run it?
 
