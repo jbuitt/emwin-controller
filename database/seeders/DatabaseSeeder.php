@@ -20,6 +20,7 @@ class DatabaseSeeder extends Seeder
         // ]);
 
         $this->call([
+            CreateAdminUserSeeder::class,
             StatesTableSeeder::class,
             WfoTableSeeder::class,
         ]);
