@@ -12,7 +12,7 @@ chmod -R ugo+rw /.composer
 
 /usr/local/bin/fix_noaaport_user.sh
 
-rsyslogd || true
+rsyslogd >/dev/null 2>&1 || true
 
 if [ $# -gt 0 ]; then
     exec gosu $WWWUSER "$@"
