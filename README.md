@@ -58,7 +58,7 @@ docker run --rm --interactive --tty \
   -e WWWUSER=$(id -u) \
   --volume $PWD:/var/www/html \
   emwin-controller:latest \
-  ./artisan key:generate
+  ./artisan key:generate --force
 ```
 
 6. Now, install the front-end dependencies:
