@@ -21,17 +21,14 @@ return [
     | should be enabled. Valid values are:
     |
     | * npemwin
-    | * ftp-text
-    | * ftp-graphic
-    | * http-text
-    | * http-graphic
+    | * ftp
+    | * http
     |
-    | Default is 'npemwin,http-graphic'.
-    |
-    | Note that the npemwin client does not download the full suite of graphics
-    | available on EMWIN.
+    | Note that the 'npemwin' client does not download the full suite of graphics
+    | available on EMWIN. In order to download all graphics, use the 'ftp' or 'http'
+    | client.
     */
-    'download_clients_enabled' => env('DOWNLOAD_CLIENTS_ENABLED', 'npemwin,http-images'),
+    'download_clients_enabled' => env('DOWNLOAD_CLIENTS_ENABLED', 'npemwin'),
 
     /*
     |--------------------------------------------------------------------------
