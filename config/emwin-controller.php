@@ -21,12 +21,14 @@ return [
     | should be enabled. Valid values are:
     |
     | * npemwin
-    | * ftp
-    | * http
+    | * ftp-text
+    | * ftp-graphics
+    | * http-text
+    | * http-graphics
     |
     | Note that the 'npemwin' client does not download the full suite of graphics
-    | available on EMWIN. In order to download all graphics, use the 'ftp' or 'http'
-    | client.
+    | available on EMWIN. In order to have access to all graphics, use the
+    | 'ftp-graphics' or 'http-graphics' client.
     */
     'download_clients_enabled' => env('DOWNLOAD_CLIENTS_ENABLED', 'npemwin'),
 
@@ -48,6 +50,23 @@ return [
             'autostart' => env('NPEMWIN_CLIENT_AUTOSTART', false),
         ],
 
+        'ftp-text' => [
+            // This key is not accessed directly. Refer to ftp settings below.
+        ],
+
+        'ftp-graphics' => [
+            // This key is not accessed directly. Refer to ftp settings below.
+        ],
+
+        'http-text' => [
+            // This key is not accessed directly. Refer to http settings below.
+        ],
+
+        'http-graphics' => [
+            // This key is not accessed directly. Refer to http settings below.
+        ],
+
+        // FTP settings for text and graphics
         'ftp' => [
             'server_hostname' => env('FTP_CLIENT_HOSTNAME', 'tgftp.nws.noaa.gov'),
             'server_protocol' => 'ftp',
@@ -61,10 +80,10 @@ return [
             'autostart' => env('FTP_CLIENT_AUTOSTART', false),
         ],
 
+        // HTTP settings for text and graphics
         'http' => [
             'server_hostname' => env('HTTP_CLIENT_HOSTNAME', 'tgftp.nws.noaa.gov'),
             'server_protocol' => 'http',
-            'server_passive_mode' => 'n/a',
             'server_username' => env('HTTP_CLIENT_USERNAME', ''),
             'server_password' => env('HTTP_CLIENT_PASSWORD', ''),
             'server_products_path' => env('HTTP_CLIENT_PRODUCTS_PATH', 'SL.us008001/CU.EMWIN/DF.xt/DC.gsatR/OPS'),
@@ -73,7 +92,6 @@ return [
             'temp_directory' => env('HTTP_CLIENT_TEMP_DIR', 'app/public/temp'),
             'autostart' => env('HTTP_CLIENT_AUTOSTART', false),
         ],
-
     ],
 
     /*
