@@ -35,7 +35,7 @@
                 {{ $slot }}
             </main>
         </div>
-        <div class="w-full h-48 bg-gray-100 dark:bg-gray-700 text-black dark:text-white static bottom-0 p-2">
+        <div class="w-full h-52 bg-gray-100 dark:bg-gray-700 text-black dark:text-white static bottom-0 p-2">
             <footer id="footer">
                <livewire:emwin-log />
             </footer>
