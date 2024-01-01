@@ -3,7 +3,9 @@
 namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\URL;
+use App\Models\User;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -24,13 +26,16 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         if (config('app.env') === 'production') {
-            if (config('app.force_https_urls') !== false) { 
+            if (config('app.force_https_urls') !== false) {
                 URL::forceScheme('https');
             }
         } elseif (config('app.env') === 'local') {
-            if (config('app.force_https_urls')) { 
+            if (config('app.force_https_urls')) {
                 URL::forceScheme('https');
             }
         }
+        Gate::define('viewPulse', function (User $user) {
+            return $user->id === 1;
+        });
     }
 }
