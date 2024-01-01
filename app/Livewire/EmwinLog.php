@@ -10,7 +10,7 @@ class EmwinLog extends Component
 
     public function getLogLines()
     {
-        $logFile = base_path() . '/storage/logs/pan_run-' . date('Y-m-d') . '.log';
+        $logFile = base_path() . '/storage/logs/laravel-' . date('Y-m-d') . '.log';
         if (file_exists($logFile)) {
             $this->lastTenLogLines = shell_exec('tail ' . $logFile);
         } else {
