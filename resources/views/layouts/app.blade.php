@@ -13,7 +13,9 @@
 
         <!-- Scripts -->
         @vite(['resources/css/app.css', 'resources/js/app.js'])
+
         @livewireStyles
+        @livewireScripts
     </head>
     <body class="font-sans antialiased">
         <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -33,6 +35,10 @@
                 {{ $slot }}
             </main>
         </div>
-        @livewireScripts
+        <div class="w-full h-48 bg-gray-100 dark:bg-gray-700 text-black dark:text-white static bottom-0 p-2">
+            <footer id="footer">
+               <livewire:emwin-log />
+            </footer>
+        </div>
     </body>
 </html>
