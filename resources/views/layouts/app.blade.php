@@ -18,7 +18,7 @@
         @livewireScripts
     </head>
     <body class="font-sans antialiased">
-        <div class="min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div class="flex flex-col bg-gray-100 dark:bg-gray-900 justify-between">
             @include('layouts.navigation')
 
             <!-- Page Heading -->
@@ -31,13 +31,12 @@
             @endif
 
             <!-- Page Content -->
-            <main>
+            <main class="mb-auto">
                 {{ $slot }}
             </main>
-        </div>
-        <div class="w-full h-52 bg-gray-100 dark:bg-gray-700 text-black dark:text-white static bottom-0 p-2">
-            <footer id="footer">
-               <livewire:emwin-log />
+
+            <footer id="footer" class="w-full h-52 bg-gray-100 dark:bg-gray-700 text-black dark:text-white static bottom-0 p-2">
+                <livewire:emwin-log />
             </footer>
         </div>
     </body>
