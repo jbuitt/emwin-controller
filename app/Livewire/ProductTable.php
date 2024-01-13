@@ -10,7 +10,7 @@ class ProductTable extends DataTableComponent
 {
     protected $model = Product::class;
 
-    protected $listeners = ['productAdded'];
+    protected $listeners = ['productAdded' => '$refresh'];
 
     public function configure(): void
     {
@@ -66,11 +66,6 @@ class ProductTable extends DataTableComponent
     public function getWfo($row, $column)
     {
         return strtoupper(substr($row->name, 8, 4));
-    }
-
-    public function productAdded()
-    {
-        $this->emit('refreshDatatable');
     }
 
 }
