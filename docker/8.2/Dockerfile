@@ -78,6 +78,9 @@ RUN chmod 750 /etc/sudoers.d/
 RUN echo "sail ALL=(ALL:ALL) SETENV:NOPASSWD: /usr/bin/systemctl reload php8.2-fpm.service" >/etc/sudoers.d/sail
 RUN chmod 440 /etc/sudoers.d/sail
 
+# Copy crontab for EMWIN Controller
+COPY etc/cron.d/emwin-controller /etc/cron.d/emwin-controller
+
 COPY install_php_deps.sh /usr/local/bin/install_php_deps.sh
 COPY install_fe_deps.sh /usr/local/bin/install_fe_deps.sh
 COPY start-container /usr/local/bin/start-container

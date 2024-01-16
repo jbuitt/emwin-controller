@@ -18,6 +18,9 @@
         @livewireScripts
     </head>
     <body class="font-sans antialiased">
+        <style>
+            [x-cloak] { display: none !important; }
+        </style>
         <div class="flex flex-col bg-gray-100 dark:bg-gray-900 justify-between">
             @include('layouts.navigation')
 
@@ -38,6 +41,7 @@
             <footer id="footer" class="w-full h-64 bg-gray-100 dark:bg-gray-700 text-black dark:text-white static bottom-0 p-2">
                 <livewire:emwin-log />
             </footer>
+
         </div>
     </body>
 </html>
