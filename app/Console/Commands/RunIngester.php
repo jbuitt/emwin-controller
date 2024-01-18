@@ -3,13 +3,15 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Process;
 use App\Jobs\ProcessEmwinZipFileJob;
+use App\Traits\AppConfigTrait;
 
 class RunIngester extends Command
 {
+    use AppConfigTrait;
+
     /**
      * The name and signature of the console command.
      *
@@ -87,11 +89,11 @@ class RunIngester extends Command
             case 'ftp-graphics':
             case 'http-text':
             case 'http-graphics':
-                if (boolval(Cache::get('scheduled_downloads_flag', '0'))) {
-                    Log::info('scheduled_downloads_flag is true, so the ' . $client . ' download client is being dispatched..');
+                if (!boolval($this->getAppConfigValue('scheduledDownloadsFlag', 0))) {
+                    Log::info('scheduledDownloadsFlag is true, so the ' . $client . ' download client is being dispatched..');
                     ProcessEmwinZipFileJob::dispatch($client, time());
                 } else {
-                    Log::info('The scheduled_downloads_flag is false, not dispatching..');
+                    Log::info('The scheduledDownloadsFlag is false, not dispatching..');
                 }
                 break;
 

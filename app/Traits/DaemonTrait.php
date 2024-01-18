@@ -2,12 +2,14 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Log;
+use App\Traits\AppConfigTrait;
 use Carbon\Carbon;
 
 trait DaemonTrait
 {
+    use AppConfigTrait;
+
     /**
     * Perform the process action
     *
@@ -214,7 +216,7 @@ trait DaemonTrait
             'statusCode' => 200,
             'message' => 'OK',
             'details' => [
-                'status' => boolval(Cache::get('scheduled_downloads_flag', '0')) ? 'Running' : 'Stopped',
+                'status' => boolval($this->getAppConfigValue('scheduledDownloadsFlag', 0)) ? 'Running' : 'Stopped',
             ],
         ];
     }
@@ -224,7 +226,7 @@ trait DaemonTrait
      */
     public function enableScheduledDownloads(): void
     {
-        Cache::put('scheduled_downloads_flag', '1');
+        $this->setAppConfigValue('scheduledDownloadsFlag', 1);
     }
 
     /**
@@ -232,7 +234,7 @@ trait DaemonTrait
      */
     public function disableScheduledDownloads(): void
     {
-        Cache::put('scheduled_downloads_flag', '0');
+        $this->setAppConfigValue('scheduledDownloadsFlag', 0);
     }
 
 }

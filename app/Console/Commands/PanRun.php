@@ -51,6 +51,7 @@ class PanRun extends Command
                         Log::channel('panrunlog')->info('Product is not a text file, skipping.');
                     } else {
                         $this->copyProductToWebDir($productFiles[$i]);
+                        sleep(1);
                     }
                 }
             }
