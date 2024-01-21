@@ -31,12 +31,13 @@ class ProcessControlPanel extends Component
                 $this->buttonLabel = 'Stop';
                 // $this->buttonClasses = 'bg-red-500 hover:bg-red-700';
                 $this->buttonIconClass = 'fa-stop';
-            } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
+            }
+            if (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
                 // Turn on scheduled downloading
                 $this->enableScheduledDownloads();
-                sleep(2);
-                $this->buttonLabel = 'Stop';
-                $this->processStatus = 'Running';
+                // sleep(2);
+                // $this->buttonLabel = 'Stop';
+                // $this->processStatus = 'Running';
             }
         } elseif ($this->processStatus === 'Running') {
             Log::info('Disabled scheduled download of products.');
@@ -48,12 +49,13 @@ class ProcessControlPanel extends Component
                 $this->buttonLabel = 'Start';
                 // $this->buttonClasses = 'bg-green-500 hover:bg-green-700';
                 $this->buttonIconClass = 'fa-play';
-            } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
+            }
+            if (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
                 // Turn off scheduled downloading
                 $this->disableScheduledDownloads();
-                sleep(2);
-                $this->buttonLabel = 'Start';
-                $this->processStatus = 'Stopped';
+                // sleep(2);
+                // $this->buttonLabel = 'Start';
+                // $this->processStatus = 'Stopped';
             }
         } else {
             $this->processStatus = 'Error';
