@@ -33,6 +33,7 @@
         fi
         rm -f /tmp/artifacts.zip
     @endfor
+    sleep 1
 @endtask
 
 @task('setup_new_env', $on_servers)
@@ -54,7 +55,10 @@
 @task('shutdown_old_docker', $on_servers)
     @for ($i=1; $i<=$num_controllers; $i++)
         echo 'EMWIN Controller - Changing directory to current directory..'
-        cd /var/www/emwin-controller{{ $i }}/current{{ $i }}/
+        cd /var/www/emwin-controller{{ $i }}/current/
+
+        echo 'EMWIN Controller - Exporting $COMPOSE_PROJECT_NAME..'
+        export COMPOSE_PROJECT_NAME=$(cat /var/www/emwin-controller{{ $i }}/COMPOSE_PROJECT_NAME)
 
         echo 'EMWIN Controller - Shutting down current Docker containers..'
         source sail.env
@@ -63,14 +67,17 @@
         cd /var/www/emwin-controller{{ $i }}/
 
         echo 'EMWIN Controller - Replace current release symlink..'
-        ln -nfs /var/www/emwin-controller{{ $i }}/releases/{{ $release}} /var/www/emwin-controller{{ $i }}/current{{ $i }}
+        ln -nfs /var/www/emwin-controller{{ $i }}/releases/{{ $release}} /var/www/emwin-controller{{ $i }}/current
     @endfor
 @endtask
 
 @task('startup_new_docker', $on_servers)
     @for ($i=1; $i<=$num_controllers; $i++)
         echo 'EMWIN Controller - Changing directory to current directory..'
-        cd /var/www/emwin-controller{{ $i }}/current{{ $i }}/
+        cd /var/www/emwin-controller{{ $i }}/current/
+
+        echo 'EMWIN Controller - Exporting $COMPOSE_PROJECT_NAME..'
+        export COMPOSE_PROJECT_NAME={{ $release }}
 
         echo 'EMWIN Controller - Starting new Docker containers..'
         source sail.env
@@ -87,20 +94,23 @@
         done
 
         echo 'EMWIN Controller - Running database migrations..'
-        docker exec current{{ $i }}-emwin_controller{{ $i }}-1 ./artisan migrate --seed --force --isolated
+        docker exec {{ $release }}-emwin_controller-1 ./artisan migrate --seed --force --isolated
     @endfor
 @endtask
 
 @task('clean_up', $on_servers)
     @for ($i=1; $i<=$num_controllers; $i++)
         echo 'EMWIN Controller - Changing directory to current directory..'
-        cd /var/www/emwin-controller{{ $i }}/current{{ $i }}/
+        cd /var/www/emwin-controller{{ $i }}/current/
 
         echo "EMWIN Controller - Clearing bootstrapped files.."
-        docker exec current{{ $i }}-emwin_controller{{ $i }}-1 ./artisan optimize:clear
+        docker exec {{ $release }}-emwin_controller-1 ./artisan optimize:clear
 
         echo "EMWIN Controller - Restart Queue Worker.."
-        docker exec current{{ $i }}-emwin_controller{{ $i }}-1 ./artisan queue:restart
+        docker exec {{ $release }}-emwin_controller-1 ./artisan queue:restart
+
+        echo 'EMWIN Controller - Updating COMPOSE_PROJECT_NAME..'
+        echo {{ $release }} >/var/www/emwin-controller{{ $i }}/COMPOSE_PROJECT_NAME
 
         echo 'EMWIN Controller - Removing old releases..'
         NUM_RELEASES=$(ls /var/www/emwin-controller{{ $i }}/releases/ | wc -l)
