@@ -32,14 +32,10 @@ git clone https://github.com/jbuitt/emwin-controller.git
 cd emwin-controller/
 ```
 
-2. Copy the desired file you want Docker Compose to use.
+2. Copy the Docker Compose config file:
 
 ```
-cp docker-compose-minimal.yml docker-compose.yml
-
-# or
-
-cp docker-compose-full.yml docker-compose.yml   # usually what you want
+cp docker-compose.yml.example docker-compose.yml
 ```
 
 3. Copy the example env file to the file to source in the next step:

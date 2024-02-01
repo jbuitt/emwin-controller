@@ -20,6 +20,5 @@ yarn-error.log
 /.idea
 /.vscode
 /app/public
-Envoy.blade.php
 docker-compose.yml
 sail.env
