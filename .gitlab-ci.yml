@@ -26,11 +26,18 @@ test:
   - npm i
   - npm run build
   - ./vendor/bin/sail up -d
-  - sleep 10
   - ./vendor/bin/sail artisan key:generate
+  - |
+    while true; do
+      if [[ $(docker ps | grep mysql-server | grep healthy) == "" ]]; then
+        break
+      fi
+      sleep 1
+    done
   - ./vendor/bin/sail artisan migrate --seed
   - ./vendor/bin/sail artisan test
   - ./vendor/bin/sail down
+  - docker volume rm emwin-controller_sail-mysql
   - sudo /usr/bin/chown -R deployment:deployment *
   only:
   - dev
