@@ -32,7 +32,7 @@
             exit 1
         fi
         rm -f /tmp/artifacts.zip
-        sleep 1
+        sleep 2
     @endfor
 @endtask
 
