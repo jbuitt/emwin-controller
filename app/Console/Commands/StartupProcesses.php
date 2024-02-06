@@ -43,16 +43,21 @@ class StartupProcesses extends Command
     {
         // Loop through all enabled download clients, check for autostart
         foreach (explode(',', config('emwin-controller.download_clients_enabled')) as $client) {
-            if (config('emwin-controller.download_clients.' . $client . '.autostart')) {
-                // Execute command
-                print "Auto-starting client {$client}..\n";
-                if ($client === 'npemwin') {
+            if ($client === 'npemwin') {
+                if (config('emwin-controller.download_clients.' . $client . '.autostart')) {
+                    // Execute command
+                    print "Auto-starting client {$client}..\n";
                     print json_encode($this->executeArtisanCommand('start')) . "\n";
                 } else {
-                    Cache::put('scheduled_downloads_flag', '1');
+                    print "Autostart is not enabled for client {$client}.\n";
                 }
-            } else {
-                print "Autostart is not enabled for client {$client}.\n";
+            } elseif (preg_match('/^(http|ftp)-/', $client, $matches)) {
+                if (config('emwin-controller.download_clients.' . $matches[1] . '.autostart')) {
+                    print "Auto-starting client {$client}..\n";
+                    Cache::put('scheduled_downloads_flag', '1');
+                } else {
+                    print "Autostart is not enabled for client {$client}.\n";
+                }
             }
         }
         // Sleep for 60 seconds so supervisord doesn't think the process stopped too quickly
