@@ -104,7 +104,7 @@
         docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan storage:link
 
         echo 'EMWIN Controller - Installing plug-ins..'
-        docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan emwin-controller:install_plugins
+        docker exec {{ $releases[$i-1] }}-emwin_controller-1 su - sail -c "cd /var/www/html/ && ./artisan emwin-controller:install_plugins"
 
         echo 'EMWIN Controller - Running database migrations..'
         docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan migrate --seed --force --isolated
