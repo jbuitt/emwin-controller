@@ -54,7 +54,7 @@ class StartupProcesses extends Command
             } elseif (preg_match('/^(http|ftp)-/', $client, $matches)) {
                 if (config('emwin-controller.download_clients.' . $matches[1] . '.autostart')) {
                     print "Auto-starting client {$client}..\n";
-                    Cache::put('scheduled_downloads_flag', '1');
+                    Cache::put('scheduledDownloadsFlag', '1');
                 } else {
                     print "Autostart is not enabled for client {$client}.\n";
                 }
