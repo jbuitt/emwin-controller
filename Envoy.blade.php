@@ -101,7 +101,10 @@
             sleep 1
         done
 
-        echo 'NWWS-OI Controller - Installing plug-ins..'
+        echo 'EMWIN Controller - Creating storage symlink..'
+        docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan storage:link
+
+        echo 'EMWIN Controller - Installing plug-ins..'
         docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan emwin-controller:install_plugins
 
         echo 'EMWIN Controller - Running database migrations..'
