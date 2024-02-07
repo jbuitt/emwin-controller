@@ -52,6 +52,11 @@
 
         echo "EMWIN Controller - Creating docker-compose.yml file.."
         cp /var/www/emwin-controller{{ $i }}/persistent/docker-compose.yml docker-compose.yml
+
+        if [[ -e "/var/www/emwin-controller{{ $i }}/persistent/plugins.json" ]]; then
+           echo "EMWIN Controller - Creating plugins.json file.."
+           cp /var/www/emwin-controller{{ $i }}/persistent/plugins.json plugins.json
+        fi
     @endfor
 @endtask
 
@@ -95,6 +100,9 @@
             fi
             sleep 1
         done
+
+        echo 'NWWS-OI Controller - Installing plug-ins..'
+        docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan emwin-controller:install_plugins
 
         echo 'EMWIN Controller - Running database migrations..'
         docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan migrate --seed --force --isolated
