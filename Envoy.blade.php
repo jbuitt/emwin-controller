@@ -2,7 +2,7 @@
 
 @setup
     $on_servers = ['on' => $env];
-    $gitlab_url = 'https://git.sm-lan.net';
+    $gitlab_url = 'https://gitlab.infra.wxnotify.com';
     $num_controllers = 2;
     $releases_to_keep = 5;
     $releases = array();
@@ -46,11 +46,11 @@
         echo "EMWIN Controller - Creating .env file.."
         cp /var/www/emwin-controller{{ $i }}/persistent/.env .env
 
-        echo "EMWIN Controller - Creating sail.env file.."
-        cp /var/www/emwin-controller{{ $i }}/persistent/sail.env sail.env
+        echo "EMWIN Controller - Creating docker.env file.."
+        cp /var/www/emwin-controller{{ $i }}/persistent/docker.env docker.env
 
-        echo "EMWIN Controller - Creating docker-compose.yml file.."
-        cp /var/www/emwin-controller{{ $i }}/persistent/docker-compose.yml docker-compose.yml
+        echo "EMWIN Controller - Creating compose.yml file.."
+        cp /var/www/emwin-controller{{ $i }}/persistent/compose.yml compose.yml
 
         if [[ -e "/var/www/emwin-controller{{ $i }}/persistent/plugins.json" ]]; then
            echo "EMWIN Controller - Creating plugins.json file.."
@@ -68,7 +68,7 @@
         export COMPOSE_PROJECT_NAME=$(cat /var/www/emwin-controller{{ $i }}/COMPOSE_PROJECT_NAME)
 
         echo 'EMWIN Controller - Shutting down current Docker containers..'
-        docker compose down
+        docker compose --env-file docker.env down
 
         cd /var/www/emwin-controller{{ $i }}/
 
@@ -86,10 +86,11 @@
         export COMPOSE_PROJECT_NAME={{ $releases[$i-1] }}
 
         echo 'EMWIN Controller - Starting new Docker containers..'
-        docker compose up -d
+        docker compose --env-file docker.env up -d
 
         # Check to make sure Laravel API is up and responding to requests
         while true; do
+            APP_PORT=$(grep '^APP_PORT' docker.env | awk -F= '{print $2}')
             RESULTS=$(curl -sf http://127.0.0.1:${APP_PORT}/api/status || echo '{"statusCode":503,"message":"Service Unavailable","details":[]}')
             # echo "\$RESULTS = #$RESULTS#"
             if [[ $(echo $RESULTS | jq -r .statusCode) == "200" ]]; then

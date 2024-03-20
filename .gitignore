@@ -20,5 +20,5 @@ yarn-error.log
 /.idea
 /.vscode
 /app/public
-docker-compose.yml
+compose.yml
 docker.env
