@@ -68,7 +68,6 @@
         export COMPOSE_PROJECT_NAME=$(cat /var/www/emwin-controller{{ $i }}/COMPOSE_PROJECT_NAME)
 
         echo 'EMWIN Controller - Shutting down current Docker containers..'
-        source sail.env
         docker compose down
 
         cd /var/www/emwin-controller{{ $i }}/
@@ -87,7 +86,6 @@
         export COMPOSE_PROJECT_NAME={{ $releases[$i-1] }}
 
         echo 'EMWIN Controller - Starting new Docker containers..'
-        source sail.env
         docker compose up -d
 
         # Check to make sure Laravel API is up and responding to requests
