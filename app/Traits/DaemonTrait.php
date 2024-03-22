@@ -60,18 +60,16 @@ trait DaemonTrait
                             'pid' => $pid,
                         ),
                     );
-                } else {
-                    return array(
-                        'statusCode' => 200,
-                        'message' => 'OK',
-                        'details' => array(
-                            'status' => 'Stopped',
-                            'result' => "process not found or PID file does not exist",
-                            'pid' => -1,
-                        ),
-                    );
                 }
-                break;
+                return array(
+                    'statusCode' => 200,
+                    'message' => 'OK',
+                    'details' => array(
+                        'status' => 'Stopped',
+                        'result' => "process not found or PID file does not exist",
+                        'pid' => -1,
+                    ),
+                );
 
             case 'start':
                 // Check to see if process is already running
@@ -125,19 +123,17 @@ trait DaemonTrait
                                 'pid' => $pid,
                             ),
                         );
-                    } else {
-                        return array(
-                            'statusCode' => 500,
-                            'message' => 'Server Error',
-                            'details' => array(
-                                'status' => 'Error',
-                                'result' => "The process did not start after 5 seconds",
-                                'pid' => -1,
-                            ),
-                        );
                     }
+                    return array(
+                        'statusCode' => 500,
+                        'message' => 'Server Error',
+                        'details' => array(
+                            'status' => 'Error',
+                            'result' => "The process did not start after 5 seconds",
+                            'pid' => -1,
+                        ),
+                    );
                 }
-                break;
 
             case 'stop':
                 // Before attempting to stop, make sure process is running
@@ -163,7 +159,7 @@ trait DaemonTrait
                     sleep(1);
                     // Check for running process
                     exec("ps -ef | grep '[n]pemwind -F'", $output);
-                    if (empty($output) && !file_exists($pidFile)) {
+                    if (empty($output)) {
                         $running = FALSE;
                         break;
                     }
@@ -192,19 +188,26 @@ trait DaemonTrait
                             'pid' => -1,
                         ),
                     );
-                } else {
-                    return array(
-                        'statusCode' => 500,
-                        'message' => 'Server Error',
-                        'details' => array(
-                            'status' => 'Error',
-                            'result' => "The process did not stop after 5 seconds",
-                            'pid' => -1,
-                        ),
-                    );
                 }
-                break;
+                return array(
+                    'statusCode' => 500,
+                    'message' => 'Server Error',
+                    'details' => array(
+                        'status' => 'Error',
+                        'result' => "The process did not stop after 5 seconds",
+                        'pid' => -1,
+                    ),
+                );
         }
+        return array(
+            'statusCode' => 400,
+            'message' => 'Bad Request',
+            'details' => array(
+                'status' => 'Bad Action',
+                'result' => '',
+                'pid' => -1,
+            ),
+        );
     }
 
     /**

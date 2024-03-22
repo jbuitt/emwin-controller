@@ -48,11 +48,6 @@ class SyslogTable extends DataTableComponent
 
     /**
      * Gets the facility name from ID
-     * 
-     * @param Row    $row    The row
-     * @param Column $column The column
-     * 
-     * @return string|NULL The facility name
      */
     public function getFacilityName($row, $column): ?string
     {
@@ -87,11 +82,6 @@ class SyslogTable extends DataTableComponent
 
     /**
      * Gets the priority name from ID
-     * 
-     * @param Row    $row    The row
-     * @param Column $column The column
-     * 
-     * @return string|NULL The priority name
      */
     public function getPriorityName($row, $column): ?string
     {

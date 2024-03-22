@@ -36,7 +36,7 @@ class PurgeOldProducts extends Command
     /**
      * Execute the console command.
      *
-     * @return mixed
+     * @return int
      */
     public function handle(): int
     {
@@ -48,7 +48,7 @@ class PurgeOldProducts extends Command
         }
         // Delete old products from database
         Log::info('Purging products older than ' . $days . ' days from database..');
-        Product::whereDate('created_at', '<=', Carbon::now()->subDays($days))->delete();
+        Product::whereDate('created_at', '<=', Carbon::now()->subDays(intval($days)))->delete();
         // Delete old products from filesystem
         Log::info('Purging EMWIN products older than ' . $days . ' days from filesystem..');
         exec('/usr/bin/find ' . storage_path(config('emwin-controller.emwin.archivedir')) . ' -mtime +' . $days . ' -delete 2>&1', $output, $exitCode);

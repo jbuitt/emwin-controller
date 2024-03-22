@@ -54,6 +54,7 @@ class ProcessEmwinZipFileJob implements ShouldQueue
             return 1;
         }
         // Get desired zip file name
+        $zipFile = '';
         if ($fileType === 'text') {
             $zipFile = config(
                 'emwin-controller.download_clients.' . $client . '.text_products_file'
@@ -214,6 +215,7 @@ class ProcessEmwinZipFileJob implements ShouldQueue
         $tempFiles = glob(storage_path($tempDirectory) . '/' . $fileType . '/*.*');
         Log::channel($logChannel)->info('Found ' . count($tempFiles) . ' products..');
         $productsInventoried = 0;
+        $product = '';
         for ($i=0; $i<count($tempFiles); $i++) {
             $c = $i + 1;
             $productFile = basename($tempFiles[$i]);

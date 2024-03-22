@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
+use Illuminate\Support\Facades\Log;
 use App\Models\Config;
 use GuzzleHttp\Exception\ConnectException;
 
@@ -38,7 +39,7 @@ class UpdateEmwinServerList extends Command
 
     /**
      * Execute the console command.
-     * 
+     *
      * @return int
      */
     public function handle(): int
@@ -58,10 +59,10 @@ class UpdateEmwinServerList extends Command
             fclose($outfile);
             // Replace server list in the .env file and reload cache
             file_put_contents(
-                app()->environmentFilePath(), 
+                app()->environmentFilePath(),
                 str_replace(
-                    'NPEMWIN_CLIENT_SERVERLIST=' . config('emwin-controller.download_clients.npemwin.servers'), 
-                    'NPEMWIN_CLIENT_SERVERLIST=' . implode(",", $serverList), 
+                    'NPEMWIN_CLIENT_SERVERLIST=' . config('emwin-controller.download_clients.npemwin.servers'),
+                    'NPEMWIN_CLIENT_SERVERLIST=' . implode(",", $serverList),
                     file_get_contents(app()->environmentFilePath())
                 )
             );
@@ -81,24 +82,24 @@ class UpdateEmwinServerList extends Command
     private function getCurrentEmwinServerList(): array
     {
         $url = 'https://www.weathermessage.com/Support/EMWINInternetStatus.aspx';
+        $serverList = [];
         try {
             $response = Http::timeout(10)->retry(3, 1000)->get($url);
-        } catch (ConnectException $e) {
-            $errorType = 'connect';
-            Log::error('Connect exception performing GET ' . $uri . ' : ' . $e->getMessage());
-        } catch (RequestException $e) {
-            $errorType = 'request';
-            Log::error('Request exception performing GET ' . $uri . ' : ' . $e->getMessage());
-        }
-        $serverList = [];
-        $htmlLines = explode("\n", $response->body());
-        for ($i=0; $i<count($htmlLines); $i++) {
-            //print "**DEBUG** \$htmlLines[$i] = $htmlLines[$i]\n";
-            if (preg_match('/<td width="25%"><font color="Blue">([a-z0-9.]+)<\/font><\/td><td width="35%"><font color="Blue">(.*)<\/font><\/td><td align="center" width="15%"><font color="Blue">(\d+)<\/font><\/td>/', $htmlLines[$i], $matches)) {
-                if ($matches[1] !== '0.0.0.0') {
-                    array_push($serverList, $matches[1] . ':' . $matches[3]);
+            $htmlLines = explode("\n", $response->body());
+            for ($i=0; $i<count($htmlLines); $i++) {
+                //print "**DEBUG** \$htmlLines[$i] = $htmlLines[$i]\n";
+                if (preg_match('/<td width="25%"><font color="Blue">([a-z0-9.]+)<\/font><\/td><td width="35%"><font color="Blue">(.*)<\/font><\/td><td align="center" width="15%"><font color="Blue">(\d+)<\/font><\/td>/', $htmlLines[$i], $matches)) {
+                    if ($matches[1] !== '0.0.0.0') {
+                        array_push($serverList, $matches[1] . ':' . $matches[3]);
+                    }
                 }
             }
+        } catch (ConnectException $e) {
+            $errorType = 'connect';
+            Log::error('Connect exception performing GET ' . $url . ' : ' . $e->getMessage());
+        } catch (RequestException $e) {
+            $errorType = 'request';
+            Log::error('Request exception performing GET ' . $url . ' : ' . $e->getMessage());
         }
         return $serverList;
    }

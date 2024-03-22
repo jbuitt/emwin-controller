@@ -12,7 +12,7 @@ class AppConfig extends Model
     /**
      * Allow all attributes to be mass assignable.
      *
-     * @var array
+     * @var array<string>
      */
     protected $guarded = [];
 

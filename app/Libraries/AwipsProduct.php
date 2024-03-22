@@ -239,7 +239,7 @@ class AwipsProduct
             '_C_KWIN_' .                                    // Product source
             date('YmdHis', filectime($this->fileName)) .    // Product UTC Date (YYYYMMDDhhmmss)
             '_' .                                           // Delimiter
-            substr(time(), -6) .                            // 6-digit seq. number
+            substr(strval(time()), -6) .                    // 6-digit seq. number
             '-' .                                           // Delimiter
             $priority .                                     // Priority
             '-' .                                           // Delimiter
@@ -273,9 +273,9 @@ class AwipsProduct
             '.' .                                           // Static string
             date('dHi', filectime($this->fileName)) .       // Product UTC Date (DDhhmm)
             '_' .                                           // Static string
-            substr(time(), 0, 5) .                          // 5-digit seq. number #1
+            substr(strval(time()), 0, 5) .                  // 5-digit seq. number #1
             '.' .                                           // Static string
-            substr(time(), -5) .                            // 5-digit seq. number #2
+            substr(strval(time()), -5) .                    // 5-digit seq. number #2
             '.txt');                                        // File extension
     }
 
@@ -317,68 +317,68 @@ class AwipsProduct
     //   Returns:
     //    int       - The corresponding UNIX time
     /////////////////////////////////////////////////////////////////////////////////
-    private function buildFullGmtTime($gmtAbbrTime)
-    {
-        $fullGmtTime = 0;
-        $hourDiff    = 4;	// default
-        //print "**DEBUG** \$gmt_abbr_time = $gmt_abbr_time\n";
-        // Convert the day/time if it matches the correct format
-        $fileGmtime = $this->getProductTime();
-        if (preg_match('/^(\d{2})(\d{2})(\d{2})$/', $gmtAbbrTime, $matches)) {
-            $purgeGmtDay  = $matches[1];
-            $purgeGmtHour = $matches[2];
-            $purgeGmtMin  = $matches[3];
-            $purgeGmtMon  = 0;
-            $purgeGmtYear = 0;
-            //print "**DEBUG** \$purgeGmtMin  = $purgeGmtMin\n";
-            //print "**DEBUG** \$purgeGmtHour = $purgeGmtHour\n";
-            //print "**DEBUG** \$purgeGmtDay  = $purgeGmtDay\n";
-            //print "**DEBUG** gmdate('Y-m-d H:i:s', $file_gmtime) = " . gmdate('Y-m-d H:i:s \G\M\T', $file_gmtime) . "\n";
-            $fileGmtSec  = gmdate('s', $fileGmtime);
-            $fileGmtMin  = gmdate('i', $fileGmtime);
-            $fileGmtHour = gmdate('H', $fileGmtime);
-            $fileGmtDay  = gmdate('d', $fileGmtime);
-            //print "**DEBUG** \$fileGmtMin  = $fileGmtMin\n";
-            //print "**DEBUG** \$fileGmtHour = $fileGmtHour\n";
-            //print "**DEBUG** \$fileGmtDay  = $fileGmtDay\n";
-            if ($purgeGmtDay > $fileGmtDay) {
-                //print "**DEBUG** \$purge_gmt_day > $file_gmt_day\n";
-                $hourDiff = (24 * abs($purgeGmtDay - $fileGmtDay)) - ($fileGmtHour - $purgeGmtHour);
-                if ($hourDiff > 24) {
-                    $hourDiff = 24;
-                }
-            } elseif ($purgeGmtDay === $fileGmtDay) {
-                if ($purgeGmtHour < $fileGmtHour) {
-                    // Example:
-                    //   file date/time:    01/01/2008 01:00
-                    //   purge date/time:   01/01/2008 00:00
-                    // Purge date before file date?!?!, i.e. this should never happen!
-                } elseif ($purgeGmtHour === $fileGmtHour) {
-                    // Example:
-                    //   file date/time:    01/01/2008 01:00
-                    //   purge date/time:   01/01/2008 01:00
-                    $hourDiff = 0;
-                } else {	// ($purge_gmt_hour > $file_gmt_hour)
-                    // Example:
-                    //   file date/time:    01/01/2008 00:00
-                    //   purge date/time:   01/01/2008 12:00
-                    $hourDiff = $purgeGmtHour - $fileGmtHour;
-                }
-            } else {	// ($purge_gmt_day < $file_gmt_day)
-                $hourDiff = 24 - ($fileGmtHour - $purgeGmtHour);
-                if ($hourDiff > 24) {
-                    $hourDiff = 24;
-                }
-            }
-            //print "**DEBUG** \$hourDiff = $hourDiff\n";
-            //print "**DEBUG** (stat(\$filename))[10] = " . (stat($filename))[10] . "\n";
-            $fullGmtTime = $fileGmtime + (60 * 60 * $hourDiff) + (60 * ($purgeGmtMin - $fileGmtMin)) - $fileGmtSec;
-        } else {
-            $fullGmtTime = $fileGmtime + (60 * 60 * $hourDiff);
-        }
-        //print "**DEBUG** \$fullGmtTime = $fullGmtTime\n";
-        return $fullGmtTime;
-    }
+    // private function buildFullGmtTime($gmtAbbrTime)
+    // {
+    //     $fullGmtTime = 0;
+    //     $hourDiff    = 4;	// default
+    //     //print "**DEBUG** \$gmt_abbr_time = $gmt_abbr_time\n";
+    //     // Convert the day/time if it matches the correct format
+    //     $fileGmtime = $this->getProductTime();
+    //     if (preg_match('/^(\d{2})(\d{2})(\d{2})$/', $gmtAbbrTime, $matches)) {
+    //         $purgeGmtDay  = intval($matches[1]);
+    //         $purgeGmtHour = intval($matches[2]);
+    //         $purgeGmtMin  = intval($matches[3]);
+    //         $purgeGmtMon  = 0;
+    //         $purgeGmtYear = 0;
+    //         //print "**DEBUG** \$purgeGmtMin  = $purgeGmtMin\n";
+    //         //print "**DEBUG** \$purgeGmtHour = $purgeGmtHour\n";
+    //         //print "**DEBUG** \$purgeGmtDay  = $purgeGmtDay\n";
+    //         //print "**DEBUG** gmdate('Y-m-d H:i:s', $file_gmtime) = " . gmdate('Y-m-d H:i:s \G\M\T', $file_gmtime) . "\n";
+    //         $fileGmtSec  = intval(gmdate('s', $fileGmtime));
+    //         $fileGmtMin  = intval(gmdate('i', $fileGmtime));
+    //         $fileGmtHour = intval(gmdate('H', $fileGmtime));
+    //         $fileGmtDay  = intval(gmdate('d', $fileGmtime));
+    //         //print "**DEBUG** \$fileGmtMin  = $fileGmtMin\n";
+    //         //print "**DEBUG** \$fileGmtHour = $fileGmtHour\n";
+    //         //print "**DEBUG** \$fileGmtDay  = $fileGmtDay\n";
+    //         if ($purgeGmtDay > $fileGmtDay) {
+    //             //print "**DEBUG** \$purge_gmt_day > $file_gmt_day\n";
+    //             $hourDiff = (24 * abs($purgeGmtDay - $fileGmtDay)) - ($fileGmtHour - $purgeGmtHour);
+    //             if ($hourDiff > 24) {
+    //                 $hourDiff = 24;
+    //             }
+    //         } elseif ($purgeGmtDay === $fileGmtDay) {
+    //             if ($purgeGmtHour < $fileGmtHour) {
+    //                 // Example:
+    //                 //   file date/time:    01/01/2008 01:00
+    //                 //   purge date/time:   01/01/2008 00:00
+    //                 // Purge date before file date?!?!, i.e. this should never happen!
+    //             } elseif ($purgeGmtHour === $fileGmtHour) {
+    //                 // Example:
+    //                 //   file date/time:    01/01/2008 01:00
+    //                 //   purge date/time:   01/01/2008 01:00
+    //                 $hourDiff = 0;
+    //             } else {	// ($purge_gmt_hour > $file_gmt_hour)
+    //                 // Example:
+    //                 //   file date/time:    01/01/2008 00:00
+    //                 //   purge date/time:   01/01/2008 12:00
+    //                 $hourDiff = $purgeGmtHour - $fileGmtHour;
+    //             }
+    //         } else {	// ($purge_gmt_day < $file_gmt_day)
+    //             $hourDiff = 24 - ($fileGmtHour - $purgeGmtHour);
+    //             if ($hourDiff > 24) {
+    //                 $hourDiff = 24;
+    //             }
+    //         }
+    //         //print "**DEBUG** \$hourDiff = $hourDiff\n";
+    //         //print "**DEBUG** (stat(\$filename))[10] = " . (stat($filename))[10] . "\n";
+    //         $fullGmtTime = $fileGmtime + (60 * 60 * $hourDiff) + (60 * ($purgeGmtMin - $fileGmtMin)) - $fileGmtSec;
+    //     } else {
+    //         $fullGmtTime = $fileGmtime + (60 * 60 * $hourDiff);
+    //     }
+    //     //print "**DEBUG** \$fullGmtTime = $fullGmtTime\n";
+    //     return $fullGmtTime;
+    // }
 
     /////////////////////////////////////////////////////////////////////////////////
     // splitProductInfo - splits product info into parts to make it easier to handle

@@ -69,6 +69,7 @@ class ProcessControlPanel extends Component
      */
     public function mount()
     {
+        $results = [];
         if (preg_match('/npemwin/', config('emwin-controller.download_clients_enabled'))) {
             $results = $this->performDeamonCommand('status');
         } elseif (preg_match('/(http|ftp)/', config('emwin-controller.download_clients_enabled'))) {
