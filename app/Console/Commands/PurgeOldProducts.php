@@ -51,7 +51,7 @@ class PurgeOldProducts extends Command
         Product::whereDate('created_at', '<=', Carbon::now()->subDays(intval($days)))->delete();
         // Delete old products from filesystem
         Log::info('Purging EMWIN products older than ' . $days . ' days from filesystem..');
-        exec('/usr/bin/find ' . storage_path(config('emwin-controller.emwin.archivedir')) . ' -mtime +' . $days . ' -delete 2>&1', $output, $exitCode);
+        exec('/usr/bin/find ' . storage_path(config('emwin-controller.archive_directory')) . ' -mtime +' . $days . ' -delete 2>&1', $output, $exitCode);
         // Done!
         if ($exitCode !== 0) {
             print "Error: " . implode("\n", $output) . "\n";
