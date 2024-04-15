@@ -61,16 +61,18 @@
 
 @task('shutdown_old_docker', $on_servers)
     @for ($i=1; $i<=$num_controllers; $i++)
-        echo 'EMWIN Controller - Changing directory to current directory..'
-        cd /var/www/emwin-controller{{ $i }}/current/
+        if [[ -L /var/www/emwin-controller{{ $i}}/current ]]; then
+            echo 'EMWIN Controller - Changing directory to current directory..'
+            cd /var/www/emwin-controller{{ $i }}/current/
 
-        echo 'EMWIN Controller - Exporting $COMPOSE_PROJECT_NAME..'
-        export COMPOSE_PROJECT_NAME=$(cat /var/www/emwin-controller{{ $i }}/COMPOSE_PROJECT_NAME)
+            echo 'EMWIN Controller - Exporting $COMPOSE_PROJECT_NAME..'
+            export COMPOSE_PROJECT_NAME=$(cat /var/www/emwin-controller{{ $i }}/COMPOSE_PROJECT_NAME)
 
-        echo 'EMWIN Controller - Shutting down current Docker containers..'
-        docker compose --env-file docker.env down
+            echo 'EMWIN Controller - Shutting down current Docker containers..'
+            docker compose --env-file docker.env down
 
-        cd /var/www/emwin-controller{{ $i }}/
+            cd /var/www/emwin-controller{{ $i }}/
+        fi
 
         echo 'EMWIN Controller - Replace current release symlink..'
         ln -nfs /var/www/emwin-controller{{ $i }}/releases/{{ $releases[$i-1] }} /var/www/emwin-controller{{ $i }}/current
