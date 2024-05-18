@@ -4,11 +4,13 @@ namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Cache;
+use App\Traits\AppConfigTrait;
 use App\Traits\DaemonTrait;
 
 class StartupProcesses extends Command
 {
-    use DaemonTrait;
+    use AppConfigTrait,
+        DaemonTrait;
 
     /**
      * The name and signature of the console command.
@@ -44,19 +46,24 @@ class StartupProcesses extends Command
         // Loop through all enabled download clients, check for autostart
         foreach (explode(',', config('emwin-controller.download_clients_enabled')) as $client) {
             if ($client === 'npemwin') {
-                if (config('emwin-controller.download_clients.' . $client . '.autostart')) {
+                if (config('emwin-controller.download_clients.npemwin.autostart')) {
+                    // Make sure PID file is absent since npemwin won't start if it's present
+                    // The file may exist if npemwin is not shut down properly
+                    if (file_exists('/var/run/npemwin/npemwind.pid')) {
+                        unlink('/var/run/npemwin/npemwind.pid');
+                    }
                     // Execute command
-                    print "Auto-starting client {$client}..\n";
+                    print "Auto-starting client npemwin..\n";
                     print json_encode($this->executeArtisanCommand('start')) . "\n";
                 } else {
                     print "Autostart is not enabled for client {$client}.\n";
                 }
             } elseif (preg_match('/^(http|ftp)-/', $client, $matches)) {
                 if (config('emwin-controller.download_clients.' . $matches[1] . '.autostart')) {
-                    print "Auto-starting client {$client}..\n";
-                    Cache::put('scheduledDownloadsFlag', '1');
+                    print "Auto-starting client $client..\n";
+                    $this->setAppConfigValue('scheduledDownloadsFlag', 1);
                 } else {
-                    print "Autostart is not enabled for client {$client}.\n";
+                    print "Autostart is not enabled for client $client.\n";
                 }
             }
         }
