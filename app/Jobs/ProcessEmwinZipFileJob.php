@@ -11,6 +11,7 @@ use Illuminate\Foundation\Bus\Dispatchable;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+use Symfony\Component\Console\Exception\CommandNotFoundException;
 use App\Events\NewProductArrived;
 use App\Models\Product;
 use Carbon\Carbon;
@@ -270,12 +271,17 @@ class ProcessEmwinZipFileJob implements ShouldQueue
                     // Send product to all enabled PAN plugins
                     if (!is_null(config('emwin-controller.enabled_pan_plugins')) && !empty(config('emwin-controller.enabled_pan_plugins'))) {
                         foreach (explode(',', config('emwin-controller.enabled_pan_plugins')) as $panPlugin) {
-                            $exitCode = Artisan::call($panPlugin, [
-                                'productFile' => storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile,
-                                'client' => preg_match('/ftp/', $this->client) ? 'php-ftp' : 'curl',
-                            ]);
-                            if ($exitCode !== 0) {
-                                Log::channel($logChannel)->info("There was an error calling $panPlugin.");
+                            try {
+                                chdir(base_path());
+                                $exitCode = Artisan::call($panPlugin, [
+                                    'productFile' => storage_path($archiveDirectory) . '/' . $wfo . '/' . $productFile,
+                                    'client' => preg_match('/ftp/', $this->client) ? 'php-ftp' : 'curl',
+                                ]);
+                                if ($exitCode !== 0) {
+                                    Log::channel($logChannel)->error("There was an error calling $panPlugin.");
+                                }
+                            } catch (CommandNotFoundException $e) {
+                                Log::channel($logChannel)->error("There was an error calling $panPlugin: " . $e->getMessage());
                             }
                         }
                     }
