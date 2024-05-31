@@ -110,8 +110,8 @@
         echo 'EMWIN Controller - Running database migrations..'
         docker exec {{ $releases[$i-1] }}-emwin_controller-1 ./artisan migrate --seed --force --isolated
 
-        echo 'EMWIN Controller - Running npm run build (again)..'
-        docker exec {{ $releases[$i-1] }}-emwin_controller-1 su - sail -c "cd /var/www/html/ && npm run build"
+        # echo 'EMWIN Controller - Running npm run build (again)..'
+        # docker exec {{ $releases[$i-1] }}-emwin_controller-1 su - sail -c "cd /var/www/html/ && npm run build"
     @endfor
 @endtask
 
