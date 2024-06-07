@@ -133,6 +133,13 @@ services:
             - sail
         depends_on:
             - soketi
+    dozzle:
+        image: amir20/dozzle:latest
+        restart: unless-stopped
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+        ports:
+            - '${DOZZLE_PORT:-9999}:8080'
 networks:
     sail:
         driver: bridge
