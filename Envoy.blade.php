@@ -87,6 +87,9 @@
         echo 'EMWIN Controller - Exporting $COMPOSE_PROJECT_NAME..'
         export COMPOSE_PROJECT_NAME={{ $releases[$i-1] }}
 
+        echo 'EMWIN Controller - (Re)building Docker images..'
+        docker compose --env-file docker.env build
+
         echo 'EMWIN Controller - Starting new Docker containers..'
         docker compose --env-file docker.env up -d
 
