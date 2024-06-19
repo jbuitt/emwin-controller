@@ -170,4 +170,15 @@ return [
     */
     'enabled_pan_plugins' => env('ENABLED_PAN_PLUGINS', ''),
 
+    /*
+    |--------------------------------------------------------------------------
+    | Logging configuration
+    |--------------------------------------------------------------------------
+    */
+    'logging' => [
+        'host' => env('LOGGING_HOST', '127.0.0.1'),
+        'transport' => env('LOGGING_TRANSPORT', 'UDP'),
+        'port' => env('LOGGING_PORT', 12201),
+    ],
+
 ];
