@@ -31,7 +31,9 @@ class ExamplePlugin extends Command
         $client = $this->argument('client');
 
         // Log that we're here
-        Log::info('In example PAN plugin..');
+        Log::info('In example PAN plugin..', [
+            'app_name' => config('app.name')
+        ]);
 
         // Do something with product...
 

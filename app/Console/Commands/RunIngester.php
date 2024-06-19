@@ -37,7 +37,9 @@ class RunIngester extends Command
         $client = $this->argument('client');
         // Change directory to the base path
         chdir(base_path());
-        //Log::debug(json_encode($procEnvVars));
+        //Log::debug(json_encode($procEnvVars), [
+        //    'app_name' => config('app.name')
+        //]);
         switch ($client) {
             case 'npemwin':
                 // Set environment variables for npemwin client
@@ -55,32 +57,48 @@ class RunIngester extends Command
                             }
                             file_put_contents('/usr/local/etc/npemwin/servers.conf', implode("\n", $servers));
                         } else {
-                            Log::info('Server list is empty, skipping update.');
+                            Log::info('Server list is empty, skipping update.', [
+                                'app_name' => config('app.name')
+                            ]);
                         }
                     } else {
-                        Log::warning('The file servers.conf is not writable. Skipping update.');
+                        Log::warning('The file servers.conf is not writable. Skipping update.', [
+                            'app_name' => config('app.name')
+                        ]);
                     }
                 } else {
-                    Log::error('The file servers.conf does not exist!');
+                    Log::error('The file servers.conf does not exist!', [
+                        'app_name' => config('app.name')
+                    ]);
                     return 1;
                 }
                 // Start process and append output to log
                 if (config('emwin-controller.download_clients.npemwin.client_cmd') !== '') {
-                    Log::info("Running command '" . config('emwin-controller.download_clients.npemwin.client_cmd') . "'..");
+                    Log::info("Running command '" . config('emwin-controller.download_clients.npemwin.client_cmd') . "'..", [
+                        'app_name' => config('app.name')
+                    ]);
                     $process = Process::forever()
                         ->env($procEnvVars)
                         ->start(config('emwin-controller.download_clients.npemwin.client_cmd'));
                     // Perform tasks while process is running
                     while ($process->running()) {
-                        //Log::info($process->latestOutput());
-                        //Log::error($process->latestErrorOutput());
+                        //Log::info($process->latestOutput(), [
+                        //    'app_name' => config('app.name')
+                        //]);
+                        //Log::error($process->latestErrorOutput(), [
+                        //    'app_name' => config('app.name')
+                        //]);
                         sleep(1);
                     }
                     // Wait for process to end (crash or receive TERM/KILL signal)
                     $result = $process->wait();
-                    Log::info('EMWIN Ingester process stopped.');
+                    Log::info('EMWIN Ingester process stopped.', [
+                        'app_name' => config('app.name')
+                    ]);
                 } else {
-                    Log::error('EMWIN Ingester client path is not defined, exiting.');
+                    Log::error('EMWIN Ingester client path is not defined, exiting.', [
+                        'app_name' => config('app.name')
+                    ]);
                     return 1;
                 }
                 break;
@@ -90,10 +108,14 @@ class RunIngester extends Command
             case 'http-text':
             case 'http-graphics':
                 if (boolval($this->getAppConfigValue('scheduledDownloadsFlag', 0))) {
-                    Log::info('scheduledDownloadsFlag is true, so the ' . $client . ' download client is being dispatched..');
+                    Log::info('scheduledDownloadsFlag is true, so the ' . $client . ' download client is being dispatched..', [
+                        'app_name' => config('app.name')
+                    ]);
                     ProcessEmwinZipFileJob::dispatch($client, time());
                 } else {
-                    Log::info('The scheduledDownloadsFlag is false, not dispatching..');
+                    Log::info('The scheduledDownloadsFlag is false, not dispatching..', [
+                        'app_name' => config('app.name')
+                    ]);
                 }
                 break;
 

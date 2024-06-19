@@ -3,12 +3,10 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Client\RequestException;
 use Illuminate\Support\Facades\Artisan;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
-use App\Models\Config;
 use GuzzleHttp\Exception\ConnectException;
 
 class UpdateEmwinServerList extends Command
@@ -96,10 +94,14 @@ class UpdateEmwinServerList extends Command
             }
         } catch (ConnectException $e) {
             $errorType = 'connect';
-            Log::error('Connect exception performing GET ' . $url . ' : ' . $e->getMessage());
+            Log::error('Connect exception performing GET ' . $url . ' : ' . $e->getMessage(), [
+                'app_name' => config('app.name')
+            ]);
         } catch (RequestException $e) {
             $errorType = 'request';
-            Log::error('Request exception performing GET ' . $url . ' : ' . $e->getMessage());
+            Log::error('Request exception performing GET ' . $url . ' : ' . $e->getMessage(), [
+                'app_name' => config('app.name')
+            ]);
         }
         return $serverList;
    }

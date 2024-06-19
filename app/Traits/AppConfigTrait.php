@@ -22,7 +22,9 @@ trait AppConfigTrait
     {
         // Check to make sure the app_configs table exists
         if (!Schema::hasTable('app_configs')) {
-            Log::error("The 'app_configs' table has not been initialized. Please run 'artisan migrate'.");
+            Log::error("The 'app_configs' table has not been initialized. Please run 'artisan migrate'.", [
+                'app_name' => config('app.name')
+            ]);
             return $default;
         }
         if (AppConfig::count() === 0) {
@@ -39,7 +41,9 @@ trait AppConfigTrait
     public function setAppConfigValue($variable, $value): void
     {
         if (!Schema::hasTable('app_configs')) {
-            Log::error("The 'app_configs' table has not been initialized. Please run 'artisan migrate'.");
+            Log::error("The 'app_configs' table has not been initialized. Please run 'artisan migrate'.", [
+                'app_name' => config('app.name')
+            ]);
             return;
         }
         if (AppConfig::count() === 0) {

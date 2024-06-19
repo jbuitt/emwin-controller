@@ -2,7 +2,6 @@
 
 namespace App\Traits;
 
-use Illuminate\Support\Facades\Log;
 use App\Traits\AppConfigTrait;
 use Carbon\Carbon;
 

@@ -3,7 +3,6 @@
 namespace App\Console\Commands;
 
 use Illuminate\Console\Command;
-use Illuminate\Support\Facades\Cache;
 use App\Traits\AppConfigTrait;
 use App\Traits\DaemonTrait;
 
