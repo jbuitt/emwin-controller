@@ -457,6 +457,9 @@ class AwipsProduct
                     // Loop and read lines until you find the end of the zone header
                     $rc = 0;
                     while (true) {
+                        if (! isset($fileContents[$i])) {
+                            break;
+                        }
                         //print "**DEBUG** \$prod_lines[$i] = $prod_lines[$i]\n";
                         $zone .= $this->fileContents[$i];
                         if (preg_match('/[-]*\d{6}[-]*\s*$/', $this->fileContents[$i])) {
